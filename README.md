@@ -1,0 +1,1 @@
+The Velvet Cake Co. is a modern, responsive full-stack bakery website built with React, Node.js, Express.js, PostgreSQL, and Prisma. It features premium cake browsing, custom cake requests, online ordering, secure authentication, customer and admin dashboards, and AI-powered customer support.
