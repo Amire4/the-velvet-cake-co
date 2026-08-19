@@ -1,0 +1,6 @@
+{
+  "name": "The Velvet Cake Co.",
+  "description": "Crafted for Every Celebration — Premium custom cake & dessert bakery in Manhattan with online ordering, custom cake studio, customer & admin dashboards, and AI concierge.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

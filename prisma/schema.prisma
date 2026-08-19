@@ -1,0 +1,211 @@
+// Prisma Schema for The Velvet Cake Co.
+// Premium Custom Cake & Dessert Bakery in Manhattan, NY
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum CustomCakeStatus {
+  PENDING
+  REVIEWING
+  QUOTED
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  RESOLVED
+}
+
+enum ChatRole {
+  USER
+  ASSISTANT
+}
+
+model User {
+  id                 String              @id @default(uuid())
+  name               String
+  email              String              @unique
+  passwordHash       String
+  phone              String?
+  role               Role                @default(CUSTOMER)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  orders             Order[]
+  customCakeRequests CustomCakeRequest[]
+  chatConversations  ChatConversation[]
+
+  @@map("users")
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  name        String
+  slug        String      @unique
+  description String
+  category    String // Birthday Cake, Wedding Cake, Cupcake, Cheesecake, Macaron, Cookie, Dessert Box, Brownie
+  price       Float
+  imageUrl    String
+  featured    Boolean     @default(false)
+  available   Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model CakeFlavor {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("cake_flavors")
+}
+
+model CustomCakeRequest {
+  id                 String           @id @default(uuid())
+  userId             String?
+  user               User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName       String
+  customerEmail      String
+  customerPhone      String
+  cakeType           String // Birthday, Wedding, Baby Shower, Anniversary, Graduation, Corporate, etc.
+  size               String // 6-inch (8-10 servings), 8-inch (14-18 servings), 10-inch (22-28 servings), Multi-tier
+  shape              String // Round, Square, Heart, Hexagon, Custom
+  tiers              Int              @default(1)
+  flavor             String
+  filling            String
+  frosting           String
+  colors             String
+  theme              String?
+  message            String?
+  dietaryRequirement String? // Standard, Eggless, Vegan, Gluten-Free, Sugar-Free
+  eventDate          DateTime
+  referenceImageUrl  String?
+  additionalNotes    String?
+  quotedPrice        Float?
+  status             CustomCakeStatus @default(PENDING)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@map("custom_cake_requests")
+}
+
+model Order {
+  id              String        @id @default(uuid())
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  orderNumber     String        @unique // e.g. VLC-2026-00001
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  subtotal        Float
+  deliveryFee     Float         @default(0.0)
+  total           Float
+  deliveryMethod  String // "SAME_DAY_MANHATTAN", "NEXT_DAY_NYC", "IN_STORE_PICKUP"
+  deliveryAddress String?
+  preferredDate   DateTime
+  customerNotes   String?
+  paymentMethod   String // "VISA", "MASTERCARD", "AMEX", "APPLE_PAY", "GOOGLE_PAY", "PAYPAL", "CASH"
+  paymentStatus   PaymentStatus @default(PENDING)
+  orderStatus     OrderStatus   @default(PENDING)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  orderItems      OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id            String   @id @default(uuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  quantity      Int      @default(1)
+  unitPrice     Float
+  customization String? // JSON string: { flavor, size, message, dietary }
+  createdAt     DateTime @default(now())
+
+  @@map("order_items")
+}
+
+model ContactMessage {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    MessageStatus @default(NEW)
+  createdAt DateTime      @default(now())
+
+  @@map("contact_messages")
+}
+
+model NewsletterSubscriber {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  subscribed Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@map("newsletter_subscribers")
+}
+
+model ChatConversation {
+  id        String        @id @default(uuid())
+  userId    String?
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sessionId String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  messages  ChatMessage[]
+
+  @@map("chat_conversations")
+}
+
+model ChatMessage {
+  id             String           @id @default(uuid())
+  conversationId String
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           ChatRole
+  message        String
+  createdAt      DateTime         @default(now())
+
+  @@map("chat_messages")
+}
