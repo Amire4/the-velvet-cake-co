@@ -4,8 +4,10 @@ import { Product, CartItem } from '../types.ts';
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (product: Product, quantity?: number, customization?: CartItem['customization']) => void;
-  removeFromCart: (index: number) => void;
-  updateQuantity: (index: number, quantity: number) => void;
+  removeFromCart: (idOrIndex: string | number) => void;
+  updateQuantity: (idOrIndex: string | number, quantity: number) => void;
+  incrementQuantity: (idOrIndex: string | number) => void;
+  decrementQuantity: (idOrIndex: string | number) => void;
   clearCart: () => void;
   itemCount: number;
   subtotal: number;
@@ -19,7 +21,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('velvet_cart');
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return parsed.map((item, idx) => ({
+          ...item,
+          id: item.id || `cart-item-${idx}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`
+        }));
+      }
+      return [];
     } catch {
       return [];
     }
@@ -50,9 +60,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return updated;
       }
 
+      const newItemId = `item_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
       return [
         ...prev,
         {
+          id: newItemId,
           product,
           quantity,
           customization,
@@ -63,25 +76,100 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (index: number) => {
-    setCartItems(prev => prev.filter((_, i) => i !== index));
+  const removeFromCart = (idOrIndex: string | number) => {
+    setCartItems(prev => {
+      if (typeof idOrIndex === 'number') {
+        return prev.filter((_, i) => i !== idOrIndex);
+      }
+      return prev.filter(item => item.id !== idOrIndex);
+    });
   };
 
-  const updateQuantity = (index: number, quantity: number) => {
+  const updateQuantity = (idOrIndex: string | number, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(index);
+      removeFromCart(idOrIndex);
       return;
     }
     setCartItems(prev => {
       const updated = [...prev];
-      if (updated[index]) {
-        updated[index] = {
-          ...updated[index],
+      let targetIndex = -1;
+
+      if (typeof idOrIndex === 'number') {
+        targetIndex = idOrIndex;
+      } else {
+        targetIndex = updated.findIndex(item => item.id === idOrIndex);
+        if (targetIndex === -1) {
+          targetIndex = updated.findIndex(item => item.product.id === idOrIndex);
+        }
+      }
+
+      if (targetIndex > -1 && updated[targetIndex]) {
+        const currentItem = updated[targetIndex];
+        updated[targetIndex] = {
+          ...currentItem,
           quantity,
-          totalPrice: quantity * updated[index].product.price
+          totalPrice: quantity * currentItem.product.price
         };
       }
       return updated;
+    });
+  };
+
+  const incrementQuantity = (idOrIndex: string | number) => {
+    setCartItems(prev => {
+      const updated = [...prev];
+      let targetIndex = -1;
+
+      if (typeof idOrIndex === 'number') {
+        targetIndex = idOrIndex;
+      } else {
+        targetIndex = updated.findIndex(item => item.id === idOrIndex);
+        if (targetIndex === -1) {
+          targetIndex = updated.findIndex(item => item.product.id === idOrIndex);
+        }
+      }
+
+      if (targetIndex > -1 && updated[targetIndex]) {
+        const currentItem = updated[targetIndex];
+        const newQty = currentItem.quantity + 1;
+        updated[targetIndex] = {
+          ...currentItem,
+          quantity: newQty,
+          totalPrice: newQty * currentItem.product.price
+        };
+      }
+      return updated;
+    });
+  };
+
+  const decrementQuantity = (idOrIndex: string | number) => {
+    setCartItems(prev => {
+      let targetIndex = -1;
+
+      if (typeof idOrIndex === 'number') {
+        targetIndex = idOrIndex;
+      } else {
+        targetIndex = prev.findIndex(item => item.id === idOrIndex);
+        if (targetIndex === -1) {
+          targetIndex = prev.findIndex(item => item.product.id === idOrIndex);
+        }
+      }
+
+      if (targetIndex > -1 && prev[targetIndex]) {
+        const currentItem = prev[targetIndex];
+        if (currentItem.quantity <= 1) {
+          return prev.filter((_, i) => i !== targetIndex);
+        }
+        const updated = [...prev];
+        const newQty = currentItem.quantity - 1;
+        updated[targetIndex] = {
+          ...currentItem,
+          quantity: newQty,
+          totalPrice: newQty * currentItem.product.price
+        };
+        return updated;
+      }
+      return prev;
     });
   };
 
@@ -90,7 +178,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.totalPrice || item.quantity * item.product.price), 0);
 
   return (
     <CartContext.Provider
@@ -99,6 +187,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         addToCart,
         removeFromCart,
         updateQuantity,
+        incrementQuantity,
+        decrementQuantity,
         clearCart,
         itemCount,
         subtotal,

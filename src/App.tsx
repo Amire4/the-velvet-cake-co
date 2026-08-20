@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { AuthProvider } from './context/AuthContext.tsx';
 import { CartProvider, useCart } from './context/CartContext.tsx';
 import Navbar from './components/Navbar.tsx';
@@ -22,7 +23,7 @@ import AdminDashboard from './pages/AdminDashboard.tsx';
 
 import { getProductsApi, getFlavorsApi } from './services/productService.ts';
 import { Product, CakeFlavor } from './types.ts';
-import { X, Sparkles, ShoppingBag } from 'lucide-react';
+import { X, Sparkles, ShoppingBag, Plus, Minus } from 'lucide-react';
 
 function AppContent() {
   const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/');
@@ -98,79 +99,89 @@ function AppContent() {
       <Navbar currentPath={currentPath} onNavigate={navigate} />
 
       {/* Main Page Routing */}
-      <main className="flex-1">
-        {currentPath === '/' && (
-          <Home
-            products={products}
-            flavors={flavors}
-            onNavigate={navigate}
-            onCustomizeProduct={handleOpenCustomize}
-          />
-        )}
-
-        {currentPath === '/cakes' && (
-          <Cakes
-            products={products}
-            onCustomizeProduct={handleOpenCustomize}
-            onNavigate={navigate}
-          />
-        )}
-
-        {currentPath === '/menu' && (
-          <Menu
-            products={products}
-            onNavigate={navigate}
-          />
-        )}
-
-        {currentPath === '/custom-cakes' && (
-          <CustomCakes
-            flavors={flavors}
-            onNavigate={navigate}
-          />
-        )}
-
-        {currentPath === '/about' && (
-          <About onNavigate={navigate} />
-        )}
-
-        {currentPath === '/gallery' && (
-          <Gallery onNavigate={navigate} />
-        )}
-
-        {currentPath === '/contact' && (
-          <Contact />
-        )}
-
-        {currentPath === '/order' && (
-          <Order
-            products={products}
-            onNavigate={navigate}
-          />
-        )}
-
-        {currentPath === '/login' && (
-          <Login onNavigate={navigate} initialMode="login" />
-        )}
-
-        {currentPath === '/register' && (
-          <Login onNavigate={navigate} initialMode="register" />
-        )}
-
-        {currentPath === '/dashboard' && (
-          <ProtectedRoute onRedirectToLogin={() => navigate('/login')}>
-            <Dashboard onNavigate={navigate} />
-          </ProtectedRoute>
-        )}
-
-        {currentPath === '/admin' && (
-          <AdminRoute
-            onRedirectToLogin={() => navigate('/login')}
-            onNavigateHome={() => navigate('/')}
+      <main className="flex-1 overflow-x-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPath}
+            initial={{ opacity: 0, y: 18, scale: 0.995 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -12, scale: 0.995 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <AdminDashboard onNavigate={navigate} />
-          </AdminRoute>
-        )}
+            {currentPath === '/' && (
+              <Home
+                products={products}
+                flavors={flavors}
+                onNavigate={navigate}
+                onCustomizeProduct={handleOpenCustomize}
+              />
+            )}
+
+            {currentPath === '/cakes' && (
+              <Cakes
+                products={products}
+                onCustomizeProduct={handleOpenCustomize}
+                onNavigate={navigate}
+              />
+            )}
+
+            {currentPath === '/menu' && (
+              <Menu
+                products={products}
+                onNavigate={navigate}
+              />
+            )}
+
+            {currentPath === '/custom-cakes' && (
+              <CustomCakes
+                flavors={flavors}
+                onNavigate={navigate}
+              />
+            )}
+
+            {currentPath === '/about' && (
+              <About onNavigate={navigate} />
+            )}
+
+            {currentPath === '/gallery' && (
+              <Gallery onNavigate={navigate} />
+            )}
+
+            {currentPath === '/contact' && (
+              <Contact />
+            )}
+
+            {currentPath === '/order' && (
+              <Order
+                products={products}
+                onNavigate={navigate}
+              />
+            )}
+
+            {currentPath === '/login' && (
+              <Login onNavigate={navigate} initialMode="login" />
+            )}
+
+            {currentPath === '/register' && (
+              <Login onNavigate={navigate} initialMode="register" />
+            )}
+
+            {currentPath === '/dashboard' && (
+              <ProtectedRoute onRedirectToLogin={() => navigate('/login')}>
+                <Dashboard onNavigate={navigate} />
+              </ProtectedRoute>
+            )}
+
+            {currentPath === '/admin' && (
+              <AdminRoute
+                onRedirectToLogin={() => navigate('/login')}
+                onNavigateHome={() => navigate('/')}
+              >
+                <AdminDashboard onNavigate={navigate} />
+              </AdminRoute>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Footer */}
@@ -267,21 +278,42 @@ function AppContent() {
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <span className="font-medium text-[#2D2926]">Quantity</span>
-                <div className="flex items-center border border-[#E8E1D5] rounded-xl bg-[#F5EFE6]">
-                  <button
+                <span className="font-medium text-[#2D2926] text-sm">Order Quantity</span>
+                <div className="flex items-center border border-[#E8E1D5] rounded-xl bg-[#F5EFE6] shadow-2xs overflow-hidden">
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    type="button"
+                    id="customize-quantity-minus-btn"
                     onClick={() => setCustomQuantity(Math.max(1, customQuantity - 1))}
-                    className="px-3 py-1.5 font-bold text-[#7D0A0A]"
+                    className="p-2 text-[#7D0A0A] hover:bg-[#E8DFC8] active:bg-[#D4AF37]/20 transition-colors"
+                    aria-label="Decrease quantity"
                   >
-                    -
-                  </button>
-                  <span className="px-3 font-semibold text-[#2D2926]">{customQuantity}</span>
-                  <button
+                    <Minus className="w-3.5 h-3.5" />
+                  </motion.button>
+                  <input
+                    type="number"
+                    min="1"
+                    max="50"
+                    value={customQuantity}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      if (!isNaN(val) && val > 0) {
+                        setCustomQuantity(val);
+                      }
+                    }}
+                    className="w-12 text-center text-xs font-bold text-[#2D2926] border-x border-[#E8E1D5] bg-white py-1.5 focus:outline-none"
+                    aria-label="Quantity"
+                  />
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    type="button"
+                    id="customize-quantity-plus-btn"
                     onClick={() => setCustomQuantity(customQuantity + 1)}
-                    className="px-3 py-1.5 font-bold text-[#7D0A0A]"
+                    className="p-2 text-[#7D0A0A] hover:bg-[#E8DFC8] active:bg-[#D4AF37]/20 transition-colors"
+                    aria-label="Increase quantity"
                   >
-                    +
-                  </button>
+                    <Plus className="w-3.5 h-3.5" />
+                  </motion.button>
                 </div>
               </div>
             </div>

@@ -286,10 +286,625 @@ export const INITIAL_PRODUCTS = [
   }
 ];
 
+export const PRODUCT_SPECIFIC_REVIEWS: Record<string, Array<{ userName: string; userEmail: string; rating: number; comment: string; verifiedPurchase: boolean }>> = {
+  'signature-velvet-noir': [
+    {
+      userName: 'Genevieve Laurent',
+      userEmail: 'g.laurent@vogue-events.com',
+      rating: 5,
+      comment: 'Ordered for our Madison Avenue gallery gala. The 24k gold leaf and Belgian chocolate truffle sponge were the highlight of the night. Absolute perfection!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Liam O\'Connor',
+      userEmail: 'liam.oconnor@tribecacap.com',
+      rating: 5,
+      comment: 'Incredible depth of flavor from the Valrhona cocoa. Arrived chilled and in pristine condition in Midtown.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Zara Qureshi',
+      userEmail: 'zara.qureshi@nyu.edu',
+      rating: 5,
+      comment: 'Bohot hi lazeez aur rich dark chocolate sponge tha! The balance of chocolate ganache is unmatched in Manhattan.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Ethan Brooks',
+      userEmail: 'ethan.brooks@gmail.com',
+      rating: 5,
+      comment: 'My wife\'s 40th birthday centerpiece. Everyone asked which Michelin-rated pastry chef baked it.',
+      verifiedPurchase: true
+    }
+  ],
+  'grand-red-velvet-royale': [
+    {
+      userName: 'Dr. Farhan Malik',
+      userEmail: 'farhan.malik@mountsinai.org',
+      rating: 5,
+      comment: 'SubhanAllah, the most authentic red velvet in NYC! The Madagascar vanilla cream cheese is velvety smooth and not overly sweet.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Olivia Kensington',
+      userEmail: 'olivia.kensington@harpers.com',
+      rating: 5,
+      comment: 'The handmade macaron crown was stunning and the ruby sponge literally melted in our mouths.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Chloe Dupont',
+      userEmail: 'chloe.dupont@sohodesign.com',
+      rating: 5,
+      comment: 'Ordered for our Soho bridal shower. Photographed like a magazine cover and tasted even more heavenly.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Julian Hayes',
+      userEmail: 'julian.hayes@columbia.edu',
+      rating: 5,
+      comment: '10/10 crumb structure. You can taste the real European cultured butter and natural cocoa.',
+      verifiedPurchase: true
+    }
+  ],
+  'lotus-biscoff-dream-cake': [
+    {
+      userName: 'Hamza Sheikh',
+      userEmail: 'hamza.sheikh@techcorp.io',
+      rating: 5,
+      comment: 'Biscoff lovers rejoice! Crunchy speculoos spread paired with caramel drizzle was out of this world.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Emily Zhang',
+      userEmail: 'emily.zhang@bloomberg.net',
+      rating: 5,
+      comment: 'The cookie butter layers had the perfect crunch-to-sponge ratio. Huge hit across our entire trading floor!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Noah Al-Mansoor',
+      userEmail: 'noah.mansoor@almansoor.ae',
+      rating: 5,
+      comment: 'Best cake I have ordered this year. The salted caramel notes balance the Biscoff sweetness flawlessly.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Sarah Jenkins',
+      userEmail: 'sjenkins@gmail.com',
+      rating: 5,
+      comment: 'Super moist sponge with rich spiced flavor. Will definitely reorder for our family celebrations.',
+      verifiedPurchase: true
+    }
+  ],
+  'strawberry-velvet-shortcake': [
+    {
+      userName: 'Isabella Rossi',
+      userEmail: 'isabella.rossi@milanoculture.it',
+      rating: 5,
+      comment: 'Fresh Hudson Valley strawberries and light-as-air Chantilly cream. Felt like a summer afternoon in Paris.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Mateo Fernandez',
+      userEmail: 'mateo.fernandez@nyarts.org',
+      rating: 5,
+      comment: 'So refreshing and light! Even our guests who usually skip dessert had second slices.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Ayesha Siddiqui',
+      userEmail: 'ayesha.siddiqui@columbia.edu',
+      rating: 5,
+      comment: 'Bohot pyari presentation thi aur strawberry compote ekdum fresh tha. Absolutely five stars!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Benjamin Scott',
+      userEmail: 'bscott@lawpartners.com',
+      rating: 5,
+      comment: 'Delivered right on time to our Upper East Side apartment. Fresh berries were sweet and succulent.',
+      verifiedPurchase: true
+    }
+  ],
+  'chocoholic-hazelnut-praline': [
+    {
+      userName: 'Domenico Moretti',
+      userEmail: 'dmoretti@culinaryroma.it',
+      rating: 5,
+      comment: 'The roasted Piedmont hazelnut praline inside is pure luxury. Tastes like an elevated, artisan Ferrero Rocher.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Natasha Volkov',
+      userEmail: 'nvolkov@nycfashion.com',
+      rating: 5,
+      comment: 'Silky Nutella mousse with crunchy praline pearls. Truly an unforgettable birthday cake.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Bilal Ahmed',
+      userEmail: 'bilal.ahmed@fintech.co',
+      rating: 5,
+      comment: 'Rich, chocolatey and perfectly textured hazelnut crunch. Best birthday treat I have ever had!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Grace Higgins',
+      userEmail: 'grace.higgins@gmail.com',
+      rating: 5,
+      comment: 'Indulgent in the best way possible. Any chocolate and hazelnut lover will be utterly obsessed.',
+      verifiedPurchase: true
+    }
+  ],
+  'matcha-pistachio-opera-cake': [
+    {
+      userName: 'Kenji Takahashi',
+      userEmail: 'kenji.takahashi@tokyojapan.com',
+      rating: 5,
+      comment: 'Authentic ceremonial Uji matcha with deep floral umami, paired beautifully with Sicilian pistachio cream.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Victoria Sterling',
+      userEmail: 'victoria.sterling@architectsnyc.com',
+      rating: 5,
+      comment: 'The gold leaf finish and razor-sharp opera cake layers were mesmerizing. A true architectural work of art.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Mahnoor Khan',
+      userEmail: 'mahnoor.khan@designstudio.pk',
+      rating: 5,
+      comment: 'Unique and sophisticated flavor profile. Not too sugary, exquisitely balanced with tea notes.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Lucas Moreau',
+      userEmail: 'lucas.moreau@lyonpastry.fr',
+      rating: 5,
+      comment: 'Delicate green tea notes and French pastry techniques executed with master precision.',
+      verifiedPurchase: true
+    }
+  ],
+  'lexington-elegance-tiered-cake': [
+    {
+      userName: 'Eleanor & James Montgomery',
+      userEmail: 'the.montgomerys@gmail.com',
+      rating: 5,
+      comment: 'Our wedding guests are still talking about this cake weeks later. The architectural sugar flowers looked completely real!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Claire Whitmore (NYC Wedding Planner)',
+      userEmail: 'claire@whitmoreevents.com',
+      rating: 5,
+      comment: 'As an event coordinator at The Plaza, The Velvet Cake Co. is my top tier recommendation for luxury bridal cakes.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Tariq Mehmood',
+      userEmail: 'tariq.mehmood@nybusiness.com',
+      rating: 5,
+      comment: 'Ordered for our daughter\'s Walima reception in Manhattan. Dignified, grand, and heavenly delicious.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Sophie Van Der Bilt',
+      userEmail: 'sophie.vanderbilt@manhattanlux.com',
+      rating: 5,
+      comment: 'The ivory textured Swiss buttercream was flawlessly piped. Arrived in a temperature-controlled van with setup support.',
+      verifiedPurchase: true
+    }
+  ],
+  'manhattan-flora-bridal-cake': [
+    {
+      userName: 'Hannah & Tyler Vance',
+      userEmail: 'vance.wedding2026@gmail.com',
+      rating: 5,
+      comment: 'The pastel floral arrangements and smooth vanilla bean crumb made our intimate rooftop wedding truly magical.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Sana Riaz',
+      userEmail: 'sana.riaz@gmail.com',
+      rating: 5,
+      comment: 'Two tiers of pure elegance. The elderflower syrup reduction gave it such an enchanting aroma.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Giselle Beaulieu',
+      userEmail: 'giselle.beaulieu@montreal.ca',
+      rating: 5,
+      comment: 'Subtle, romantic and incredibly moist. Outstanding customer service from Master Chef Rana Amir.',
+      verifiedPurchase: true
+    }
+  ],
+  'vintage-lambeth-victorian-wedding-tier': [
+    {
+      userName: 'Penelope Featherington',
+      userEmail: 'penelope.f@mayfairsociety.org',
+      rating: 5,
+      comment: 'The intricate Victorian overpiped scrollwork is breathtaking craftsmanship. True royal aesthetic!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Astrid Lindholm',
+      userEmail: 'astrid.lindholm@stockholmarts.se',
+      rating: 5,
+      comment: 'Such gorgeous vintage piping! Almond chiffon interior was fluffy, fragrant, and deeply comforting.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Usman Farooq',
+      userEmail: 'usman.farooq@lexingtonlaw.com',
+      rating: 5,
+      comment: 'Remarkable attention to detail. Every scalloped border was razor precise and arrived intact.',
+      verifiedPurchase: true
+    }
+  ],
+  'botanical-blossom-3-tier-grand-cake': [
+    {
+      userName: 'Arabella Sinclair',
+      userEmail: 'arabella.sinclair@edinburgh.co.uk',
+      rating: 5,
+      comment: 'Three tiers of champagne sponge and organic botanicals. It was the absolute centerpiece of our Central Park dinner.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Marcus De Vries',
+      userEmail: 'marcus.devries@amsterdamtrade.nl',
+      rating: 5,
+      comment: 'The passionfruit curd inside cutting through the champagne cake was culinary genius. 5 stars!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Fatima Zahra',
+      userEmail: 'fatima.zahra@gmail.com',
+      rating: 5,
+      comment: 'A majestic centerpiece for our grand family milestone. Everyone was in pure awe of the flavor.',
+      verifiedPurchase: true
+    }
+  ],
+  'golden-radiance-pearl-wedding-cake': [
+    {
+      userName: 'Vivienne Westwood-Smith',
+      userEmail: 'vivienne.smith@londonlux.co.uk',
+      rating: 5,
+      comment: 'The shimmering edible sugar pearls and gold radiance made this the most photographed detail of our reception.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Oliver Thornton',
+      userEmail: 'oliver.thornton@bostonpartners.com',
+      rating: 5,
+      comment: 'White chocolate collar was crisp and the interior raspberry coulis was exquisite and fresh.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Adeel Chaudhry',
+      userEmail: 'adeel.chaudhry@manhattangroup.com',
+      rating: 5,
+      comment: 'Flawless luxury execution. Shipped with utmost care and tasted top tier across all 3 tiers.',
+      verifiedPurchase: true
+    }
+  ],
+  'chantilly-cascade-2-tier-celebration-cake': [
+    {
+      userName: 'Madeleine Dubois',
+      userEmail: 'madeleine.dubois@parisart.fr',
+      rating: 5,
+      comment: 'French Chantilly cream cascade was clouds of bliss. The elderflower infusion is simply heavenly.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Christopher Hayes',
+      userEmail: 'c.hayes@verizon.net',
+      rating: 5,
+      comment: 'Ordered for our silver wedding anniversary. Light, romantic, and beautifully packaged in velvet ribbons.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Nadia Qureshi',
+      userEmail: 'nadia.qureshi@healthplus.org',
+      rating: 5,
+      comment: 'Simple yet so regal. The raspberry preserve layered between soft sponge was delightfully fresh.',
+      verifiedPurchase: true
+    }
+  ],
+  'artisan-cupcake-collection-12': [
+    {
+      userName: 'Harper Collins-Taylor',
+      userEmail: 'harper.ct@manhattanpr.com',
+      rating: 5,
+      comment: 'The 12-pack assortment saved our corporate client reception. Every single flavor was distinct and moist.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Saad Bin Khalid',
+      userEmail: 'saad.khalid@nycapitol.com',
+      rating: 5,
+      comment: 'The Salted Caramel and Red Velvet cupcakes in this box are unmatched. Freshly piped rosettes!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Maya Lin',
+      userEmail: 'maya.lin@sohostudio.com',
+      rating: 5,
+      comment: 'Individual mini masterpieces. Buttercream was rich without being greasy or heavy.',
+      verifiedPurchase: true
+    }
+  ],
+  'parisian-macaron-gift-box': [
+    {
+      userName: 'Camille Renard',
+      userEmail: 'camille.renard@parisfashion.fr',
+      rating: 5,
+      comment: 'As a Parisian living in NYC, these macarons rival the top salons on Champs-Élysées. Perfect feet and chewy ganache center.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Zubair Hashmi',
+      userEmail: 'zubair.hashmi@globalfinance.com',
+      rating: 5,
+      comment: 'Gifted this to my fiancee. The pistachio and rosewater flavors were unbelievable!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Austin Miller',
+      userEmail: 'austin.miller@nyu.edu',
+      rating: 5,
+      comment: 'Crisp delicate shell, melt-in-mouth filling. The velvet gift packaging is ultra-premium.',
+      verifiedPurchase: true
+    }
+  ],
+  'gourmet-brownie-ensemble': [
+    {
+      userName: 'Devon Rivera',
+      userEmail: 'devon.rivera@tribecafood.com',
+      rating: 5,
+      comment: 'The browned-butter pecan blondies and espresso brownies have that perfect shiny crinkly top and fudge center.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Rabia Noreen',
+      userEmail: 'rabia.noreen@gmail.com',
+      rating: 5,
+      comment: 'Maldon sea salt flakes on 70% dark chocolate brownie is pure perfection with espresso coffee.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Trevor Campbell',
+      userEmail: 'tcampbell@nycadvisory.com',
+      rating: 5,
+      comment: 'Dense, gooey, and made with serious chocolate. Highly addictive for office tea breaks!',
+      verifiedPurchase: true
+    }
+  ],
+  'petite-velvet-cupcake-bouquet-6': [
+    {
+      userName: 'Serena Gomez-White',
+      userEmail: 'serena.gw@nyhospitals.org',
+      rating: 5,
+      comment: 'Sent this to a friend recovering at Mount Sinai hospital. Brought so much joy! Lavender cream was sublime.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Waleed Akhtar',
+      userEmail: 'waleed.akhtar@gmail.com',
+      rating: 5,
+      comment: 'Packaged like fine jewelry. The cocoa velvet crumb is soft like a cloud.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Audrey Hepburn-Lee',
+      userEmail: 'audrey.lee@gramercyhotel.com',
+      rating: 5,
+      comment: '6 gorgeous cupcakes that make the perfect hostess gift in Manhattan.',
+      verifiedPurchase: true
+    }
+  ],
+  'french-madeleine-sable-gift-box': [
+    {
+      userName: 'Thierry Blanc',
+      userEmail: 'thierry.blanc@bordeauxwines.fr',
+      rating: 5,
+      comment: 'Brown butter clover honey madeleines with perfect hump, and the fleur de sel sablés crumble like butter.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Hina Batool',
+      userEmail: 'hina.batool@nyu.edu',
+      rating: 5,
+      comment: 'A must-have for evening tea. Fresh vanilla bean aroma fills the room when you open the box.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Sebastian Vance',
+      userEmail: 'sebastian.vance@brooklynlofts.com',
+      rating: 5,
+      comment: 'Traditional French baking done with genuine respect for ingredients.',
+      verifiedPurchase: true
+    }
+  ],
+  'assorted-eclair-tartlet-flight-8': [
+    {
+      userName: 'Dominique Laroche',
+      userEmail: 'dominique.laroche@parismonthly.com',
+      rating: 5,
+      comment: 'The Meyer lemon curd tartlet has that electric citrus punch, and the vanilla diplomat éclair is crisp.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Haris Munir',
+      userEmail: 'haris.munir@fintechpak.com',
+      rating: 5,
+      comment: 'Choux pastry was super fresh and crisp, not soggy at all. 5 stars all the way!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Scarlett Miller',
+      userEmail: 'scarlett.miller@manhattanbrunch.com',
+      rating: 5,
+      comment: 'Served at our Sunday brunch. Guests polished off all 8 pieces within 10 minutes.',
+      verifiedPurchase: true
+    }
+  ],
+  'classic-ny-baked-cheesecake': [
+    {
+      userName: 'Frankie Castiglione',
+      userEmail: 'frankie.c@brooklyneats.com',
+      rating: 5,
+      comment: 'Born and raised in Brooklyn, this is hands down the best baked cheesecake in the five boroughs. Dense, velvety graham crust.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Zainab Rizvi',
+      userEmail: 'zainab.rizvi@medicalcenter.org',
+      rating: 5,
+      comment: 'The berry compote cut through the creamy richness brilliantly. Pure comfort food!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Arthur Pendelton',
+      userEmail: 'arthur.pendelton@uppereast.org',
+      rating: 5,
+      comment: 'Real slow-baked cheesecake without gelatins. Authentic NYC patisserie benchmark.',
+      verifiedPurchase: true
+    }
+  ],
+  'manhattan-celebration-dessert-box': [
+    {
+      userName: 'Kendra Washington',
+      userEmail: 'kendra.w@midtownlaw.com',
+      rating: 5,
+      comment: 'The ultimate party box! Mini cakes, macarons, truffles, and cookies all in one bespoke velvet case.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Omer Farooq',
+      userEmail: 'omer.farooq@nyventures.com',
+      rating: 5,
+      comment: 'Ordered for our company milestone in Midtown. Saved us from having to order multiple separate desserts.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Lillian Pierce',
+      userEmail: 'lillian.pierce@centralparkwest.org',
+      rating: 5,
+      comment: 'Exceeded all expectations. The presentation alone makes you feel like royalty.',
+      verifiedPurchase: true
+    }
+  ],
+  'caramelized-autumn-pecan-tart': [
+    {
+      userName: 'Clayton Cooper',
+      userEmail: 'clayton.cooper@georgiafarms.com',
+      rating: 5,
+      comment: 'Georgia pecans with bourbon maple caramel inside a crisp butter sablé. Smells like autumn heaven.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Maria Hernandez',
+      userEmail: 'm.hernandez@tribecadental.com',
+      rating: 5,
+      comment: 'Not overly sweet like commercial pies. Rich roasted pecan crunch and buttery crust.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Danish Iqbal',
+      userEmail: 'danish.iqbal@techpak.io',
+      rating: 5,
+      comment: 'A sensational dessert for chilly evenings. Warm it for 10 seconds with vanilla ice cream!',
+      verifiedPurchase: true
+    }
+  ],
+  'wild-berry-mascarpone-tart': [
+    {
+      userName: 'Sienna Del Rio',
+      userEmail: 'sienna.delrio@fashionweek.com',
+      rating: 5,
+      comment: 'The fresh blackberries and raspberries glazed over light Italian mascarpone mousse are breathtaking.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Faisal Jameel',
+      userEmail: 'faisal.jameel@gmail.com',
+      rating: 5,
+      comment: 'Crisp pastry shell with fresh berry brightness. Perfect summer celebration tart.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Rachel Greenburg',
+      userEmail: 'rachel.greenburg@nycart.org',
+      rating: 5,
+      comment: 'Stunning ruby red presentation. Our guests could not stop taking pictures before digging in.',
+      verifiedPurchase: true
+    }
+  ],
+  'dark-cherry-black-forest-entremet': [
+    {
+      userName: 'Hans Gruber-Schmidt',
+      userEmail: 'hans.schmidt@munichgourmet.de',
+      rating: 5,
+      comment: 'Authentic Schwarzwälder style with sour Morello cherries and real Kirsch essence. Outstanding.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Maryam Nawaz',
+      userEmail: 'maryam.nawaz@lahoredelights.pk',
+      rating: 5,
+      comment: 'Chocolate blossom shavings with tart cherry compote. Rich, fluffy, and immensely satisfying!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Felix Baum',
+      userEmail: 'felix.baum@swissconsulting.ch',
+      rating: 5,
+      comment: 'Glossy mirror glaze and layered mousse. Top-tier pastry artistry in New York.',
+      verifiedPurchase: true
+    }
+  ],
+  'passionfruit-mango-mousse-dome': [
+    {
+      userName: 'Priya Sharma',
+      userEmail: 'priya.sharma@delhiculinary.in',
+      rating: 5,
+      comment: 'Tropical mango mousse with tangy passion fruit curd center. So refreshing, vibrant and exotic!',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Nabeel Shah',
+      userEmail: 'nabeel.shah@nycrealty.com',
+      rating: 5,
+      comment: 'The yellow mirror glaze is hypnotic. Tart, sweet, and feather light after a heavy dinner.',
+      verifiedPurchase: true
+    },
+    {
+      userName: 'Gabriel Santos',
+      userEmail: 'gabriel.santos@riodesign.br',
+      rating: 5,
+      comment: 'Almond joconde sponge base gives the perfect texture foundation to the velvety tropical mousse.',
+      verifiedPurchase: true
+    }
+  ]
+};
+
 export async function getSeedData() {
   const salt = await bcrypt.genSalt(10);
   const adminPasswordHash = await bcrypt.hash('VelvetAdmin2026!', salt);
   const customerPasswordHash = await bcrypt.hash('CustomerPass2026!', salt);
+
+  const ownerUser = {
+    id: 'usr-owner-001',
+    name: 'Rana Amir Shahzad (Store Owner & Master Patissier)',
+    email: 'ranaamirshahzad630@gmail.com',
+    passwordHash: adminPasswordHash,
+    phone: '+1 (212) 555-0187',
+    role: 'ADMIN' as const,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
 
   const adminUser = {
     id: 'usr-admin-001',
@@ -314,6 +929,7 @@ export async function getSeedData() {
   };
 
   return {
+    ownerUser,
     adminUser,
     demoCustomer,
     flavors: INITIAL_FLAVORS,

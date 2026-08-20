@@ -141,3 +141,67 @@ export async function deleteProduct(req: Request, res: Response) {
     });
   }
 }
+
+export async function getProductReviewsHandler(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const reviews = await db.getProductReviews(id);
+    return res.json({
+      success: true,
+      data: reviews
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to retrieve product reviews.'
+    });
+  }
+}
+
+export async function addProductReviewHandler(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const { userName, userEmail, rating, comment } = req.body;
+
+    if (!rating || Number(rating) < 1 || Number(rating) > 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid star rating between 1 and 5.'
+      });
+    }
+
+    if (!comment || comment.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a review comment describing your experience.'
+      });
+    }
+
+    const result = await db.addProductReview(id, {
+      userName: userName?.trim() || 'Valued Guest',
+      userEmail: userEmail?.trim(),
+      rating: Number(rating),
+      comment: comment.trim(),
+      verifiedPurchase: true
+    });
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found.'
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: 'Thank you for your rating & review! It has been published.',
+      data: result
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to submit review.'
+    });
+  }
+}
+

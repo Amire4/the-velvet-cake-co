@@ -45,13 +45,15 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
             {/* Left Copy */}
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="lg:col-span-7 space-y-6 text-left"
             >
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F5EFE6] border border-[#E8E1D5] text-[#7D0A0A] text-xs font-semibold uppercase tracking-widest shadow-xs"
               >
@@ -61,7 +63,8 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
 
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#2D2926] leading-[1.15]"
               >
@@ -70,7 +73,8 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
 
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.7, delay: 0.3 }}
                 className="text-base sm:text-lg text-[#5C554E] leading-relaxed max-w-2xl font-light"
               >
@@ -79,7 +83,8 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
 
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.7, delay: 0.4 }}
                 className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
               >
@@ -107,9 +112,10 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
 
               {/* Trust Badges */}
               <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{ duration: 0.8, delay: 0.5 }}
                 className="pt-6 border-t border-[#E8E1D5] flex flex-wrap items-center gap-6 text-xs text-[#8E877D]"
               >
                 <div className="flex items-center gap-1.5">
@@ -131,7 +137,8 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
             {/* Right Hero Visual Collage */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, x: 30 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
+              whileInView={{ opacity: 1, scale: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
               className="lg:col-span-5 relative"
             >
@@ -158,8 +165,9 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
                 {/* Floating Rating Pill */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
                   whileHover={{ scale: 1.05 }}
                   className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-[#E8E1D5] flex items-center gap-3 cursor-default"
                 >
@@ -180,8 +188,9 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
                 {/* Floating Recipe Pill */}
                 <motion.div 
                   initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
                   whileHover={{ scale: 1.05 }}
                   className="absolute -top-4 -right-4 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-lg border border-[#E8E1D5] hidden sm:flex items-center gap-2 text-xs font-serif font-bold text-[#7D0A0A] cursor-default"
                 >
@@ -196,12 +205,12 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
         </div>
       </section>
 
-      {/* 2. CATEGORY SPOTLIGHT (Guaranteed 5+ items per category) */}
+      {/* 2. CATEGORY SPOTLIGHT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto space-y-2"
         >
@@ -212,7 +221,7 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
             Every Category Handcrafted Fresh Daily
           </h2>
           <p className="text-sm text-[#5C554E]">
-            Each bakery collection features at least 5-6 chef-crafted artisan recipes.
+            Each bakery collection features at least 5-6 chef-crafted artisan recipes with live star ratings.
           </p>
         </motion.div>
 
@@ -224,20 +233,20 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
             return (
               <motion.div
                 key={cat.name}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: false, amount: 0.15 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
                 whileHover={{ y: -6 }}
                 onClick={() => setActiveCategoryFilter(isSelected ? 'All' : cat.name as any)}
-                className={`p-6 rounded-2xl border cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-4 ${
+                className={`p-6 rounded-3xl border cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-4 ${
                   isSelected
                     ? 'bg-[#7D0A0A] text-white border-[#7D0A0A] shadow-xl'
                     : 'bg-white text-[#2D2926] border-[#E8E1D5] hover:border-[#7D0A0A]/40 shadow-sm hover:shadow-lg'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isSelected ? 'bg-white/15 text-[#FDFCF0]' : 'bg-[#F5EFE6] text-[#7D0A0A]'}`}>
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${isSelected ? 'bg-white/15 text-[#FDFCF0]' : 'bg-[#F5EFE6] text-[#7D0A0A]'}`}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${isSelected ? 'bg-white/20 text-white' : 'bg-[#FAF7F2] text-[#7D0A0A] border border-[#E8E1D5]'}`}>
@@ -291,12 +300,12 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
             return (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false, amount: 0.15 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 whileHover={{ y: -4 }}
-                className="bg-white p-6 rounded-2xl border border-[#E8E1D5] shadow-sm hover:shadow-md transition-shadow space-y-3"
+                className="bg-white p-6 rounded-3xl border border-[#E8E1D5] shadow-xs hover:shadow-md transition-all space-y-3"
               >
                 <div className="w-10 h-10 rounded-xl bg-[#F5EFE6] text-[#7D0A0A] flex items-center justify-center">
                   <Icon className="w-5 h-5" />
@@ -309,12 +318,12 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
         </div>
       </section>
 
-      {/* 4. EXPLORE PRODUCTS GRID (Filtered or Bestsellers) */}
+      {/* 4. EXPLORE PRODUCTS GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-4"
         >
@@ -326,7 +335,7 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
               {activeCategoryFilter === 'All' ? 'Bestsellers & Favorites' : `${activeCategoryFilter} (${categoryFilteredProducts.length} Items)`}
             </h2>
             <p className="text-sm text-[#5C554E]">
-              Prepared fresh for same-day delivery or pickup at 245 Lexington Ave.
+              Prepared fresh for same-day delivery or pickup at 245 Lexington Ave. Leave ratings directly on any cake!
             </p>
           </div>
 
@@ -361,14 +370,14 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
         </div>
       </section>
 
-      {/* 5. FLAVORS SHOWCASE (30+ FLAVORS SPOTLIGHT) */}
+      {/* 5. FLAVORS SHOWCASE */}
       <section className="bg-[#F5EFE6]/60 py-16 border-y border-[#E8E1D5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
             className="text-center max-w-2xl mx-auto space-y-3"
           >
@@ -411,9 +420,9 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
       {/* 6. CUSTOM CAKE ATELIER BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.8 }}
           className="bg-[#1A1615] rounded-3xl overflow-hidden shadow-2xl text-[#FDFCF0] p-8 sm:p-12 lg:p-16 border border-[#2D2926] relative"
         >

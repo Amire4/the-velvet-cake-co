@@ -25,6 +25,16 @@ export async function deleteProductApi(id: string): Promise<void> {
   await api.delete(`/products/${id}`);
 }
 
+export async function getProductReviewsApi(productId: string) {
+  const res = await api.get(`/products/${productId}/reviews`);
+  return res.data.data;
+}
+
+export async function submitProductReviewApi(productId: string, data: { userName: string; userEmail?: string; rating: number; comment: string }) {
+  const res = await api.post(`/products/${productId}/reviews`, data);
+  return res.data;
+}
+
 export async function getFlavorsApi(availableOnly = false): Promise<CakeFlavor[]> {
   const res = await api.get('/flavors', { params: { available: availableOnly } });
   return res.data.data;

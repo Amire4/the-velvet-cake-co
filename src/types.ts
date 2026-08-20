@@ -9,6 +9,17 @@ export interface User {
   createdAt?: string;
 }
 
+export interface ProductReview {
+  id: string;
+  productId: string;
+  userName: string;
+  userEmail?: string;
+  rating: number;
+  comment: string;
+  verifiedPurchase?: boolean;
+  createdAt: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -19,6 +30,9 @@ export interface Product {
   imageUrl: string;
   featured: boolean;
   available: boolean;
+  rating?: number;
+  reviewCount?: number;
+  reviews?: ProductReview[];
 }
 
 export interface CakeFlavor {
@@ -38,6 +52,7 @@ export interface OrderItem {
 }
 
 export interface CartItem {
+  id: string;
   product: Product;
   quantity: number;
   customization: {

@@ -12,6 +12,7 @@
     background-color: #FDFCF0;
     color: #2D2926;
     margin: 0;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-serif {
@@ -35,11 +36,69 @@
 
 ::-webkit-scrollbar-thumb {
   background: #D2B48C;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #7D0A0A;
 }
+
+/* Advanced Luxury Shimmer & Glow Animations */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-gold-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(212,175,55,0.25) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: goldShimmer 3.5s infinite;
+}
+
+.luxury-card-glow {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card-glow:hover {
+  box-shadow: 0 20px 35px -10px rgba(125, 10, 10, 0.12), 0 0 15px rgba(212, 175, 55, 0.18);
+  transform: translateY(-4px);
+}
+
+/* Print Stylesheet for Flawless Official Invoices */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+  }
+
+  /* Hide everything except the printable invoice container */
+  header, nav, footer, #chatbot-widget, #cart-drawer, .no-print, [role="dialog"]:not(.printable-invoice-dialog) {
+    display: none !important;
+  }
+
+  .printable-invoice-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20mm !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  @page {
+    size: auto;
+    margin: 15mm;
+  }
+}
+
 
 

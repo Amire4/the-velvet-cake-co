@@ -35,12 +35,14 @@ export async function register(req: Request, res: Response) {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
+    const isMasterAdminEmail = email.toLowerCase() === 'ranaamirshahzad630@gmail.com' || email.toLowerCase() === 'admin@thevelvetcakeco.com';
+
     const user = await db.createUser({
       name,
       email: email.toLowerCase(),
       passwordHash,
       phone: phone || null,
-      role: 'CUSTOMER'
+      role: isMasterAdminEmail ? 'ADMIN' : 'CUSTOMER'
     });
 
     const token = jwt.sign(

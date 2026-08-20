@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, ShoppingBag, Coffee, Award, Check } from 'lucide-react';
+import { Sparkles, ShoppingBag, Coffee, Award, Check, Star, MessageSquare } from 'lucide-react';
 import { Product } from '../types.ts';
 import { useCart } from '../context/CartContext.tsx';
+import RatingReviewModal from '../components/RatingReviewModal.tsx';
 
 interface MenuProps {
   products: Product[];
@@ -47,6 +48,7 @@ const BEVERAGES = [
 export default function Menu({ products, onNavigate }: MenuProps) {
   const { addToCart } = useCart();
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [selectedProductForReview, setSelectedProductForReview] = useState<Product | null>(null);
 
   const handleAdd = (product: Product) => {
     addToCart(product, 1);
@@ -55,16 +57,12 @@ export default function Menu({ products, onNavigate }: MenuProps) {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16"
-    >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
       {/* Menu Header */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
         transition={{ duration: 0.6 }}
         className="text-center max-w-3xl mx-auto space-y-3"
       >
@@ -91,10 +89,10 @@ export default function Menu({ products, onNavigate }: MenuProps) {
           return (
             <motion.div 
               key={section.id} 
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: sIdx * 0.1 }}
+              viewport={{ once: false, amount: 0.15 }}
+              transition={{ duration: 0.5, delay: sIdx * 0.08 }}
               className="space-y-6"
             >
               <div className="border-b border-[#E8DFC8] pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
@@ -113,12 +111,12 @@ export default function Menu({ products, onNavigate }: MenuProps) {
                 {sectionProducts.map((product, pIdx) => (
                   <motion.div
                     key={product.id}
-                    initial={{ opacity: 0, y: 15 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: pIdx * 0.05 }}
+                    viewport={{ once: false, amount: 0.15 }}
+                    transition={{ duration: 0.4, delay: (pIdx % 2) * 0.06 }}
                     whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                    className="bg-white p-5 rounded-2xl border border-[#E8DFC8] hover:border-[#721C24]/30 shadow-sm hover:shadow-md transition-shadow flex gap-4 items-center justify-between"
+                    className="bg-white p-5 rounded-2xl border border-[#E8DFC8] hover:border-[#721C24]/30 shadow-xs hover:shadow-lg transition-all flex gap-4 items-center justify-between"
                   >
                     <img
                       src={product.imageUrl}
@@ -139,6 +137,22 @@ export default function Menu({ products, onNavigate }: MenuProps) {
                         <span className="font-serif text-base font-bold text-[#721C24] shrink-0">
                           ${product.price.toFixed(2)}
                         </span>
+                      </div>
+
+                      {/* Interactive Rating Badge */}
+                      <div className="flex items-center gap-2 mt-1">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedProductForReview(product)}
+                          className="flex items-center gap-1 text-[11px] text-[#8C7A6B] hover:text-[#721C24] transition-colors"
+                        >
+                          <Star className="w-3 h-3 fill-[#D4AF37] text-[#D4AF37]" />
+                          <span className="font-bold text-[#2C1810]">
+                            {(product.rating || 4.9).toFixed(1)}
+                          </span>
+                          <span>({product.reviewCount || 24} ratings)</span>
+                          <span className="underline font-semibold text-[#721C24] ml-1">Rate</span>
+                        </button>
                       </div>
 
                       <p className="text-xs text-[#6E5A4E] mt-1 line-clamp-2 leading-relaxed font-light">
@@ -182,9 +196,9 @@ export default function Menu({ products, onNavigate }: MenuProps) {
 
       {/* Beverage & Cafe Pairings */}
       <motion.div 
-        initial={{ opacity: 0, y: 25 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.2 }}
         transition={{ duration: 0.6 }}
         className="bg-[#FAF7F2] p-8 sm:p-12 rounded-3xl border border-[#E8DFC8] space-y-6"
       >
@@ -221,11 +235,11 @@ export default function Menu({ products, onNavigate }: MenuProps) {
 
       {/* Dietary & Allergen Commitment */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.2 }}
         transition={{ duration: 0.5 }}
-        className="bg-white p-8 rounded-2xl border border-[#E8DFC8] flex flex-col sm:flex-row items-center justify-between gap-6 text-xs sm:text-sm text-[#6E5A4E]"
+        className="bg-white p-8 rounded-3xl border border-[#E8DFC8] flex flex-col sm:flex-row items-center justify-between gap-6 text-xs sm:text-sm text-[#6E5A4E]"
       >
         <div className="space-y-1">
           <h4 className="font-serif font-bold text-base text-[#2C1810]">
@@ -239,12 +253,18 @@ export default function Menu({ products, onNavigate }: MenuProps) {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => onNavigate('/custom-cakes')}
-          className="px-6 py-3 rounded-full bg-[#721C24] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#58141B] shrink-0 shadow-xs"
+          className="px-6 py-3 rounded-full bg-[#7D0A0A] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#58141B] shrink-0 shadow-xs"
         >
           Custom Cake Inquiry
         </motion.button>
       </motion.div>
 
-    </motion.div>
+      {/* Review Modal */}
+      <RatingReviewModal
+        product={selectedProductForReview}
+        isOpen={!!selectedProductForReview}
+        onClose={() => setSelectedProductForReview(null)}
+      />
+    </div>
   );
 }
