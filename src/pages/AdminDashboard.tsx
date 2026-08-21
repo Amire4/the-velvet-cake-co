@@ -22,6 +22,7 @@ import { getOrdersApi, updateOrderStatusApi } from '../services/orderService.ts'
 import { getCustomCakeRequestsApi, updateCustomCakeStatusApi } from '../services/customCakeService.ts';
 import { getProductsApi, createProductApi, updateProductApi, deleteProductApi, getFlavorsApi, createFlavorApi, updateFlavorApi, deleteFlavorApi } from '../services/productService.ts';
 import { AdminStats, Order, CustomCakeRequest, ContactMessage, Product, CakeFlavor } from '../types.ts';
+import { formatCustomization } from '../utils/customizationFormatter.ts';
 
 interface AdminDashboardProps {
   onNavigate: (path: string) => void;
@@ -453,12 +454,21 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                         <p className="text-[10px] text-[#5C554E] max-w-xs truncate">{ord.deliveryAddress}</p>
                       )}
                     </td>
-                    <td className="p-3 space-y-0.5">
-                      {ord.orderItems.map((item, i) => (
-                        <p key={i} className="text-[11px] text-[#5C554E]">
-                          <strong>{item.quantity}x</strong> {item.product?.name || 'Cake'}
-                        </p>
-                      ))}
+                    <td className="p-3 space-y-1">
+                      {ord.orderItems.map((item, i) => {
+                        const customDesc = formatCustomization(item.customization);
+                        return (
+                          <div key={i} className="text-[11px] text-[#5C554E]">
+                            <span className="font-bold text-[#7D0A0A]">{item.quantity}x</span>{' '}
+                            <span className="font-semibold text-[#1A1A1A]">{item.product?.name || 'Cake'}</span>
+                            {customDesc && (
+                              <p className="text-[10px] text-[#8E877D] italic pl-3">
+                                • {customDesc}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
                     </td>
                     <td className="p-3 font-serif font-bold text-sm text-[#1A1A1A]">
                       ${ord.total.toFixed(2)}
@@ -1019,6 +1029,80 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: View Order Details */}
+      {selectedOrder && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-sm border border-[#E8E1D5] shadow-2xl p-6 w-full max-w-lg space-y-4 max-h-[90vh] overflow-y-auto text-xs">
+            <div className="flex justify-between items-start border-b border-[#E8E1D5] pb-3">
+              <div>
+                <span className="font-mono font-bold text-[#7D0A0A] text-sm">{selectedOrder.orderNumber}</span>
+                <p className="text-[11px] text-[#8E877D]">
+                  Placed on {new Date(selectedOrder.createdAt).toLocaleDateString()} at {new Date(selectedOrder.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
+              </div>
+              <span className="px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase bg-emerald-100 text-emerald-900">
+                {selectedOrder.orderStatus}
+              </span>
+            </div>
+
+            <div className="space-y-2 bg-[#FDFCF0] p-4 rounded-sm border border-[#E8E1D5]">
+              <h4 className="font-bold text-[#2D2926] uppercase tracking-wider text-[11px]">Customer Information</h4>
+              <p><strong>Name:</strong> {selectedOrder.customerName}</p>
+              <p><strong>Email:</strong> {selectedOrder.customerEmail}</p>
+              <p><strong>Phone:</strong> {selectedOrder.customerPhone || '—'}</p>
+              <p><strong>Delivery Method:</strong> {selectedOrder.deliveryMethod.replace(/_/g, ' ')}</p>
+              <p><strong>Scheduled Date:</strong> {new Date(selectedOrder.preferredDate).toLocaleDateString()}</p>
+              {selectedOrder.deliveryAddress && (
+                <p><strong>Delivery Address:</strong> {selectedOrder.deliveryAddress}</p>
+              )}
+              {selectedOrder.customerNotes && (
+                <p><strong>Customer Notes:</strong> <em>"{selectedOrder.customerNotes}"</em></p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-bold text-[#2D2926] uppercase tracking-wider text-[11px]">Order Line Items</h4>
+              <div className="space-y-2">
+                {selectedOrder.orderItems.map((item, idx) => {
+                  const customText = formatCustomization(item.customization);
+                  return (
+                    <div key={idx} className="p-3 bg-[#FAF7F2] rounded-sm border border-[#E8DFC8] space-y-1">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-[#2D2926]">
+                          {item.quantity}x {item.product?.name || 'Signature Cake'}
+                        </span>
+                        <span className="font-mono font-bold text-[#7D0A0A]">
+                          ${((item.unitPrice || 0) * item.quantity).toFixed(2)}
+                        </span>
+                      </div>
+                      {customText && (
+                        <p className="text-[11px] text-[#8C6D4F] font-medium pl-3 border-l-2 border-[#7D0A0A]/40">
+                          {customText}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-[#E8E1D5] flex justify-between items-center">
+              <span className="font-bold text-[#2D2926] text-sm">Total Paid:</span>
+              <span className="font-serif font-bold text-lg text-[#7D0A0A]">${selectedOrder.total.toFixed(2)}</span>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setSelectedOrder(null)}
+                className="px-5 py-2 bg-[#7D0A0A] hover:bg-[#960C0C] text-white rounded-sm font-semibold uppercase tracking-wider text-xs"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

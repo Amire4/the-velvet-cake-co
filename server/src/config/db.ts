@@ -181,12 +181,8 @@ class DatabaseStore {
     this.products = seed.products.map((p, i) => {
       const prodId = `prod-${String(i + 1).padStart(3, '0')}`;
       const specificReviews = PRODUCT_SPECIFIC_REVIEWS[p.slug] || [];
-      const reviewCount = specificReviews.length || (24 + ((i * 11) % 45));
-      let rating = 4.9;
-      if (specificReviews.length > 0) {
-        const sum = specificReviews.reduce((acc, r) => acc + r.rating, 0);
-        rating = Number((sum / specificReviews.length).toFixed(1));
-      }
+      const reviewCount = p.reviewCount ?? (specificReviews.length || (24 + ((i * 11) % 25)));
+      const rating = p.rating ?? 4.5;
 
       return {
         id: prodId,
@@ -198,7 +194,7 @@ class DatabaseStore {
         imageUrl: p.imageUrl,
         featured: p.featured,
         available: p.available,
-        rating,
+        rating: Math.min(4.7, Math.max(3.0, rating)),
         reviewCount,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -211,7 +207,7 @@ class DatabaseStore {
         {
           userName: `Gourmet Patron #${pIdx + 1}`,
           userEmail: `patron${pIdx + 1}@manhattanpatisserie.com`,
-          rating: 5,
+          rating: Math.round(prod.rating || 4),
           comment: `Exquisite flavor, texture, and presentation for ${prod.name}!`,
           verifiedPurchase: true
         }

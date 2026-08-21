@@ -17,6 +17,7 @@ export default function RatingReviewModal({
   onClose,
   onReviewSubmitted
 }: RatingReviewModalProps) {
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(product);
   const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -30,6 +31,7 @@ export default function RatingReviewModal({
 
   useEffect(() => {
     if (isOpen && product) {
+      setCurrentProduct(product);
       setSubmitted(false);
       setError(null);
       setUserRating(5);
@@ -53,7 +55,7 @@ export default function RatingReviewModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!product) return;
+    if (!currentProduct) return;
 
     if (!comment.trim()) {
       setError('Please write a brief comment describing your experience.');
@@ -64,7 +66,7 @@ export default function RatingReviewModal({
     setError(null);
 
     try {
-      const res = await submitProductReviewApi(product.id, {
+      const res = await submitProductReviewApi(currentProduct.id, {
         userName: userName.trim() || 'Valued Guest',
         userEmail: userEmail.trim(),
         rating: userRating,
@@ -73,11 +75,14 @@ export default function RatingReviewModal({
 
       if (res && res.success) {
         setSubmitted(true);
-        if (res.data?.product && onReviewSubmitted) {
-          onReviewSubmitted(res.data.product);
+        if (res.data?.product) {
+          setCurrentProduct(res.data.product);
+          if (onReviewSubmitted) {
+            onReviewSubmitted(res.data.product);
+          }
         }
         // Refresh review list
-        fetchReviews(product.id);
+        fetchReviews(currentProduct.id);
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Failed to submit review. Please try again.');
@@ -86,7 +91,7 @@ export default function RatingReviewModal({
     }
   };
 
-  if (!isOpen || !product) return null;
+  if (!isOpen || !currentProduct) return null;
 
   return (
     <AnimatePresence>

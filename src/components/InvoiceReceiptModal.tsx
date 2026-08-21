@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Printer, Download, CheckCircle2, ShieldCheck, Mail, Phone, MapPin, Award, Sparkles, Copy, Check } from 'lucide-react';
 import { Order } from '../types.ts';
+import { formatCustomization } from '../utils/customizationFormatter.ts';
 
 interface InvoiceReceiptModalProps {
   order: Order | null;
@@ -186,17 +187,20 @@ export default function InvoiceReceiptModal({ order, isOpen, onClose }: InvoiceR
                     </tr>
                   </thead>
                   <tbody>
-                    ${order.orderItems?.map(item => `
+                    ${order.orderItems?.map(item => {
+                      const customStr = formatCustomization(item.customization);
+                      return `
                       <tr>
                         <td>
                           <strong>${item.product?.name || 'Artisan Patisserie Item'}</strong>
-                          ${item.customization ? `<div style="font-size: 11px; color: #8C6D4F;">Customized</div>` : ''}
+                          ${customStr ? `<div style="font-size: 11px; color: #8C6D4F; margin-top: 2px;">• ${customStr}</div>` : ''}
                         </td>
                         <td style="text-align: center;">${item.quantity}</td>
                         <td style="text-align: right;">$${(item.unitPrice || 0).toFixed(2)}</td>
                         <td style="text-align: right;">$${((item.unitPrice || 0) * item.quantity).toFixed(2)}</td>
                       </tr>
-                    `).join('') || ''}
+                    `;
+                    }).join('') || ''}
                   </tbody>
                 </table>
 
@@ -373,29 +377,32 @@ export default function InvoiceReceiptModal({ order, isOpen, onClose }: InvoiceR
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F4EBE1]">
-                  {order.orderItems?.map((item, idx) => (
-                    <tr key={idx}>
-                      <td className="py-3 px-3">
-                        <span className="font-bold text-[#2D2926] block">
-                          {item.product?.name || 'Artisan Specialty Cake'}
-                        </span>
-                        {item.customization && (
-                          <span className="text-[10px] text-[#8C6D4F] italic block">
-                            Bespoke Flavor & Message Customization Applied
+                  {order.orderItems?.map((item, idx) => {
+                    const customDesc = formatCustomization(item.customization);
+                    return (
+                      <tr key={idx}>
+                        <td className="py-3 px-3">
+                          <span className="font-bold text-[#2D2926] block">
+                            {item.product?.name || 'Artisan Specialty Cake'}
                           </span>
-                        )}
-                      </td>
-                      <td className="py-3 px-3 text-center font-medium text-[#2D2926]">
-                        {item.quantity}
-                      </td>
-                      <td className="py-3 px-3 text-right text-[#6E5A4E]">
-                        ${(item.unitPrice || 0).toFixed(2)}
-                      </td>
-                      <td className="py-3 px-3 text-right font-bold text-[#2D2926]">
-                        ${((item.unitPrice || 0) * item.quantity).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
+                          {customDesc && (
+                            <span className="text-[11px] text-[#8C6D4F] font-medium block pt-0.5">
+                              ✦ {customDesc}
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3 px-3 text-center font-medium text-[#2D2926]">
+                          {item.quantity}
+                        </td>
+                        <td className="py-3 px-3 text-right text-[#6E5A4E]">
+                          ${(item.unitPrice || 0).toFixed(2)}
+                        </td>
+                        <td className="py-3 px-3 text-right font-bold text-[#2D2926]">
+                          ${((item.unitPrice || 0) * item.quantity).toFixed(2)}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

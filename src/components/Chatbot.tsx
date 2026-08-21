@@ -185,11 +185,16 @@ export default function Chatbot() {
                   <div
                     className={`max-w-[84%] px-4 py-3 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${
                       msg.role === 'USER'
-                        ? 'bg-[#7D0A0A] text-white rounded-tr-none'
-                        : 'bg-white text-[#2D2926] border border-[#E8E1D5] rounded-tl-none font-light'
+                        ? 'bg-[#7D0A0A] text-white rounded-tr-none font-medium'
+                        : 'bg-white text-[#2D2926] border border-[#E8E1D5] rounded-tl-none font-normal'
                     }`}
                   >
-                    <p className="whitespace-pre-wrap">{msg.message}</p>
+                    <p className="whitespace-pre-wrap">
+                      {msg.message
+                        .replace(/\*\*(.*?)\*\*/g, '$1')
+                        .replace(/\*(.*?)\*/g, '$1')
+                        .replace(/\*{1,}/g, '')}
+                    </p>
                   </div>
                   {msg.role === 'USER' && (
                     <div className="w-7 h-7 rounded-full bg-[#E8E1D5] text-[#7D0A0A] flex items-center justify-center shrink-0 text-xs shadow-xs mt-0.5">

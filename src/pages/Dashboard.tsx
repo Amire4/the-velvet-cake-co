@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.tsx';
 import { getOrdersApi } from '../services/orderService.ts';
 import { getCustomCakeRequestsApi } from '../services/customCakeService.ts';
 import { Order, CustomCakeRequest } from '../types.ts';
+import { formatCustomization } from '../utils/customizationFormatter.ts';
 
 interface DashboardProps {
   onNavigate: (path: string) => void;
@@ -168,23 +169,30 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                   </div>
 
                   {/* Order Items */}
-                  <div className="space-y-2">
-                    {order.orderItems.map((item, i) => (
-                      <div key={i} className="flex justify-between items-center text-xs text-[#4A3B32]">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-[#721C24]">{item.quantity}x</span>
-                          <span className="font-medium text-[#2C1810]">
-                            {item.product?.name || 'Signature Cake'}
+                  <div className="space-y-2.5">
+                    {order.orderItems.map((item, i) => {
+                      const formattedCustom = formatCustomization(item.customization);
+                      return (
+                        <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-[#4A3B32] bg-[#FAF7F2] p-3 rounded-xl border border-[#E8DFC8]/60 gap-1.5">
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-[#721C24]">{item.quantity}x</span>
+                              <span className="font-semibold text-[#2C1810]">
+                                {item.product?.name || 'Signature Cake'}
+                              </span>
+                            </div>
+                            {formattedCustom && (
+                              <p className="text-[11px] text-[#8C6D4F] font-medium pl-6">
+                                ✦ {formattedCustom}
+                              </p>
+                            )}
+                          </div>
+                          <span className="font-bold text-[#2C1810] sm:text-right shrink-0">
+                            ${(item.unitPrice * item.quantity).toFixed(2)}
                           </span>
-                          {item.customization && (
-                            <span className="text-[11px] text-[#8C6D4F]">
-                              ({item.customization})
-                            </span>
-                          )}
                         </div>
-                        <span className="font-medium">${(item.unitPrice * item.quantity).toFixed(2)}</span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {/* Delivery details */}

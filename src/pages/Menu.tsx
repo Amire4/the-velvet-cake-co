@@ -8,6 +8,7 @@ import RatingReviewModal from '../components/RatingReviewModal.tsx';
 interface MenuProps {
   products: Product[];
   onNavigate: (path: string) => void;
+  onProductUpdated?: (updatedProduct: Product) => void;
 }
 
 const MENU_SECTIONS = [
@@ -45,7 +46,7 @@ const BEVERAGES = [
   { name: 'Earl Grey Lavender Tea', price: '$5.00', desc: 'Bergamot-infused whole leaf black tea with dried French lavender.' },
 ];
 
-export default function Menu({ products, onNavigate }: MenuProps) {
+export default function Menu({ products, onNavigate, onProductUpdated }: MenuProps) {
   const { addToCart } = useCart();
   const [addedId, setAddedId] = useState<string | null>(null);
   const [selectedProductForReview, setSelectedProductForReview] = useState<Product | null>(null);
@@ -264,6 +265,7 @@ export default function Menu({ products, onNavigate }: MenuProps) {
         product={selectedProductForReview}
         isOpen={!!selectedProductForReview}
         onClose={() => setSelectedProductForReview(null)}
+        onReviewSubmitted={onProductUpdated}
       />
     </div>
   );

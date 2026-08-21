@@ -229,18 +229,14 @@ export async function initPostgresDatabase(): Promise<boolean> {
           const p = seed.products[i];
           const prodId = `prod-${String(i + 1).padStart(3, '0')}`;
           const specificReviews = PRODUCT_SPECIFIC_REVIEWS[p.slug] || [];
-          const reviewCount = specificReviews.length || (24 + ((i * 11) % 45));
-          let rating = 4.9;
-          if (specificReviews.length > 0) {
-            const sum = specificReviews.reduce((acc, r) => acc + r.rating, 0);
-            rating = Number((sum / specificReviews.length).toFixed(1));
-          }
+          const baselineRating = p.rating ?? 4.5;
+          const reviewCount = p.reviewCount ?? (24 + ((i * 11) % 25));
 
           await client.query(
             `INSERT INTO products (id, name, slug, description, category, price, image_url, featured, available, rating, review_count)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-             ON CONFLICT (slug) DO NOTHING`,
-            [prodId, p.name, p.slug, p.description, p.category, p.price, p.imageUrl, p.featured, p.available, rating, reviewCount]
+             ON CONFLICT (slug) DO UPDATE SET rating = EXCLUDED.rating, review_count = EXCLUDED.review_count`,
+            [prodId, p.name, p.slug, p.description, p.category, p.price, p.imageUrl, p.featured, p.available, baselineRating, reviewCount]
           );
 
           // Reviews
@@ -248,7 +244,7 @@ export async function initPostgresDatabase(): Promise<boolean> {
             {
               userName: `Patron #${i + 1}`,
               userEmail: `patron${i + 1}@manhattanpatisserie.com`,
-              rating: 5,
+              rating: Math.round(baselineRating),
               comment: `Exquisite flavor and presentation for ${p.name}!`,
               verifiedPurchase: true
             }

@@ -46,7 +46,9 @@ export const INITIAL_PRODUCTS = [
     price: 85.00,
     imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.7,
+    reviewCount: 48
   },
   {
     name: 'Grand Red Velvet Royale',
@@ -56,7 +58,9 @@ export const INITIAL_PRODUCTS = [
     price: 78.00,
     imageUrl: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.6,
+    reviewCount: 42
   },
   {
     name: 'Lotus Biscoff Dream Cake',
@@ -66,7 +70,9 @@ export const INITIAL_PRODUCTS = [
     price: 82.00,
     imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.4,
+    reviewCount: 36
   },
   {
     name: 'Strawberry Velvet Shortcake',
@@ -76,7 +82,9 @@ export const INITIAL_PRODUCTS = [
     price: 76.00,
     imageUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.5,
+    reviewCount: 39
   },
   {
     name: 'Chocoholic Hazelnut Praline Cake',
@@ -86,7 +94,9 @@ export const INITIAL_PRODUCTS = [
     price: 88.00,
     imageUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.7,
+    reviewCount: 52
   },
   {
     name: 'Matcha Pistachio Opera Cake',
@@ -96,7 +106,9 @@ export const INITIAL_PRODUCTS = [
     price: 84.00,
     imageUrl: 'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.3,
+    reviewCount: 31
   },
 
   // 2. WEDDING CAKES (6 items)
@@ -108,7 +120,9 @@ export const INITIAL_PRODUCTS = [
     price: 340.00,
     imageUrl: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.7,
+    reviewCount: 29
   },
   {
     name: 'Manhattan Flora Bridal Cake',
@@ -118,7 +132,9 @@ export const INITIAL_PRODUCTS = [
     price: 210.00,
     imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.2,
+    reviewCount: 24
   },
   {
     name: 'Vintage Lambeth Victorian Wedding Tier',
@@ -128,7 +144,9 @@ export const INITIAL_PRODUCTS = [
     price: 295.00,
     imageUrl: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.6,
+    reviewCount: 28
   },
   {
     name: 'Botanical Blossom 3-Tier Grand Cake',
@@ -138,7 +156,9 @@ export const INITIAL_PRODUCTS = [
     price: 385.00,
     imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.5,
+    reviewCount: 33
   },
   {
     name: 'Golden Radiance Pearl Wedding Cake',
@@ -148,7 +168,9 @@ export const INITIAL_PRODUCTS = [
     price: 360.00,
     imageUrl: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.3,
+    reviewCount: 22
   },
   {
     name: 'Chantilly Cascade 2-Tier Celebration Cake',
@@ -158,7 +180,9 @@ export const INITIAL_PRODUCTS = [
     price: 230.00,
     imageUrl: 'https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.1,
+    reviewCount: 19
   },
 
   // 3. MINI TREATS (6 items)
@@ -170,7 +194,9 @@ export const INITIAL_PRODUCTS = [
     price: 48.00,
     imageUrl: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.5,
+    reviewCount: 45
   },
   {
     name: 'Parisian Macaron Gift Box (18 pcs)',
@@ -180,7 +206,9 @@ export const INITIAL_PRODUCTS = [
     price: 52.00,
     imageUrl: 'https://images.unsplash.com/photo-1570476922354-81227cdbb76c?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.6,
+    reviewCount: 56
   },
   {
     name: 'Gourmet Brownie & Blondie Ensemble',
@@ -190,7 +218,9 @@ export const INITIAL_PRODUCTS = [
     price: 36.00,
     imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 3.9,
+    reviewCount: 27
   },
   {
     name: 'Petite Velvet Cupcake Bouquet (Box of 6)',
@@ -200,7 +230,9 @@ export const INITIAL_PRODUCTS = [
     price: 28.00,
     imageUrl: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.2,
+    reviewCount: 23
   },
   {
     name: 'French Madeleine & Sablé Gift Box',
@@ -210,7 +242,9 @@ export const INITIAL_PRODUCTS = [
     price: 32.00,
     imageUrl: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.0,
+    reviewCount: 20
   },
   {
     name: 'Assorted Éclair & Tartlet Flight (8 pcs)',
@@ -220,7 +254,9 @@ export const INITIAL_PRODUCTS = [
     price: 44.00,
     imageUrl: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.4,
+    reviewCount: 34
   },
 
   // 4. SEASONAL SPECIALS (6 items)
@@ -232,7 +268,9 @@ export const INITIAL_PRODUCTS = [
     price: 65.00,
     imageUrl: 'https://images.unsplash.com/photo-1524351199678-941a58a3df50?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.6,
+    reviewCount: 50
   },
   {
     name: 'Manhattan Celebration Dessert Box',
@@ -242,7 +280,9 @@ export const INITIAL_PRODUCTS = [
     price: 95.00,
     imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.7,
+    reviewCount: 41
   },
   {
     name: 'Caramelized Autumn Pecan Tart',
@@ -252,7 +292,9 @@ export const INITIAL_PRODUCTS = [
     price: 58.00,
     imageUrl: 'https://images.unsplash.com/photo-1514056052883-d017fddd0426?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 3.8,
+    reviewCount: 18
   },
   {
     name: 'Wild Berry Mascarpone Tart',
@@ -262,7 +304,9 @@ export const INITIAL_PRODUCTS = [
     price: 62.00,
     imageUrl: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=1000&q=80',
     featured: true,
-    available: true
+    available: true,
+    rating: 4.3,
+    reviewCount: 26
   },
   {
     name: 'Dark Cherry Black Forest Entremet',
@@ -272,7 +316,9 @@ export const INITIAL_PRODUCTS = [
     price: 74.00,
     imageUrl: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.1,
+    reviewCount: 21
   },
   {
     name: 'Passionfruit Mango Mousse Dome',
@@ -282,7 +328,9 @@ export const INITIAL_PRODUCTS = [
     price: 68.00,
     imageUrl: 'https://images.unsplash.com/photo-1508737804141-4c3b688e2546?auto=format&fit=crop&w=1000&q=80',
     featured: false,
-    available: true
+    available: true,
+    rating: 4.2,
+    reviewCount: 25
   }
 ];
 

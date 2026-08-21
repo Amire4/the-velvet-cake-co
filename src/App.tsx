@@ -93,6 +93,12 @@ function AppContent() {
     setCustomizingProduct(null);
   };
 
+  const handleProductUpdated = (updatedProduct: Product) => {
+    setProducts((prev) =>
+      prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFCF0] text-[#2D2926] flex flex-col font-sans selection:bg-[#7D0A0A] selection:text-white">
       {/* Navigation Header */}
@@ -114,6 +120,7 @@ function AppContent() {
                 flavors={flavors}
                 onNavigate={navigate}
                 onCustomizeProduct={handleOpenCustomize}
+                onProductUpdated={handleProductUpdated}
               />
             )}
 
@@ -122,6 +129,7 @@ function AppContent() {
                 products={products}
                 onCustomizeProduct={handleOpenCustomize}
                 onNavigate={navigate}
+                onProductUpdated={handleProductUpdated}
               />
             )}
 
@@ -129,6 +137,7 @@ function AppContent() {
               <Menu
                 products={products}
                 onNavigate={navigate}
+                onProductUpdated={handleProductUpdated}
               />
             )}
 

@@ -11,9 +11,10 @@ interface HomeProps {
   flavors: CakeFlavor[];
   onNavigate: (path: string) => void;
   onCustomizeProduct?: (product: Product) => void;
+  onProductUpdated?: (updatedProduct: Product) => void;
 }
 
-export default function Home({ products, flavors, onNavigate, onCustomizeProduct }: HomeProps) {
+export default function Home({ products, flavors, onNavigate, onCustomizeProduct, onProductUpdated }: HomeProps) {
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<'All' | 'Signature Cakes' | 'Wedding Cakes' | 'Mini Treats' | 'Seasonal Specials'>('All');
 
   const featuredProducts = products.filter(p => p.featured);
@@ -365,6 +366,7 @@ export default function Home({ products, flavors, onNavigate, onCustomizeProduct
               product={product}
               index={idx}
               onCustomize={onCustomizeProduct}
+              onProductUpdated={onProductUpdated}
             />
           ))}
         </div>

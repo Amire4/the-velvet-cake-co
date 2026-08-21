@@ -21,6 +21,28 @@ export interface OrderEmailData {
   }>;
 }
 
+function formatEmailCustomization(raw?: string): string {
+  if (!raw) return '';
+  try {
+    if (raw.startsWith('{') || raw.startsWith('[')) {
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null) {
+        const parts: string[] = [];
+        if (parsed.flavor) parts.push(`Flavor: ${parsed.flavor}`);
+        if (parsed.size) parts.push(`Size: ${parsed.size}`);
+        if (parsed.tier || parsed.tiers) parts.push(`Tiers: ${parsed.tier || parsed.tiers}`);
+        if (parsed.message) parts.push(`Inscription: "${parsed.message}"`);
+        if (parsed.dietary) parts.push(`Dietary: ${parsed.dietary}`);
+        if (parsed.notes) parts.push(`Note: ${parsed.notes}`);
+        return parts.length > 0 ? parts.join(' • ') : raw;
+      }
+    }
+  } catch (e) {
+    // fallback
+  }
+  return raw.replace(/[{}"]/g, '');
+}
+
 export function generateOrderEmailHtml(data: OrderEmailData): string {
   const formattedDate = new Date(data.preferredDate).toLocaleDateString('en-US', {
     weekday: 'long',
@@ -29,11 +51,13 @@ export function generateOrderEmailHtml(data: OrderEmailData): string {
     day: 'numeric',
   });
 
-  const itemsRows = data.items.map(item => `
+  const itemsRows = data.items.map(item => {
+    const formattedCust = formatEmailCustomization(item.customization);
+    return `
     <tr style="border-bottom: 1px solid #F4EBE1;">
       <td style="padding: 12px 8px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #2C1810; font-size: 14px;">
         <strong>${item.productName}</strong>
-        ${item.customization ? `<br/><span style="font-size: 12px; color: #8C6D4F;">${item.customization}</span>` : ''}
+        ${formattedCust ? `<br/><span style="font-size: 12px; color: #8C6D4F;">• ${formattedCust}</span>` : ''}
       </td>
       <td style="padding: 12px 8px; text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #4A3B32; font-size: 14px;">
         ${item.quantity}
@@ -42,7 +66,8 @@ export function generateOrderEmailHtml(data: OrderEmailData): string {
         $${(item.price * item.quantity).toFixed(2)}
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 
   return `
 <!DOCTYPE html>

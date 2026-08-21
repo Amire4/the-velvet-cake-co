@@ -39,11 +39,35 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
   const [customerNotes, setCustomerNotes] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'VISA' | 'MASTERCARD' | 'AMEX' | 'APPLE_PAY' | 'GOOGLE_PAY' | 'PAYPAL' | 'CASH'>('VISA');
 
+  // Automatically reset to 'cart' step whenever modal is reopened with items or when user profile updates
+  React.useEffect(() => {
+    if (isOpen) {
+      setError('');
+      if (cartItems.length > 0) {
+        // If there are items in cart, always open on fresh cart bag
+        setStep('cart');
+      }
+      if (user) {
+        if (!customerName) setCustomerName(user.name);
+        if (!customerEmail) setCustomerEmail(user.email);
+        if (user.phone && (!customerPhone || customerPhone.includes('555-0199'))) setCustomerPhone(user.phone);
+      }
+    }
+  }, [isOpen, cartItems.length, user]);
+
   // Dynamic delivery calculation preview (backend computes final)
   const deliveryFee = deliveryMethod === 'IN_STORE_PICKUP' ? 0 : subtotal >= 100 ? 0 : deliveryMethod === 'SAME_DAY_MANHATTAN' ? 15 : 10;
   const estimatedTotal = subtotal + deliveryFee;
 
   if (!isOpen) return null;
+
+  const handleCloseModal = () => {
+    onClose();
+    if (step === 'confirmation') {
+      setStep('cart');
+      setConfirmedOrder(null);
+    }
+  };
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,13 +119,19 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
     }
   };
 
-  const handleFinish = () => {
-    onClose();
+  const handleStartNewOrder = () => {
+    setConfirmedOrder(null);
     setStep('cart');
+    onClose();
+    onNavigate('/cakes');
+  };
+
+  const handleFinish = () => {
+    handleCloseModal();
     if (isAuthenticated) {
       onNavigate('/dashboard');
     } else {
-      onNavigate('/');
+      onNavigate('/order');
     }
   };
 
@@ -113,7 +143,7 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={handleCloseModal}
           className="absolute inset-0 bg-black/40"
         />
 
@@ -143,7 +173,7 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
               whileHover={{ rotate: 90, scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               id="order-modal-close-btn"
-              onClick={onClose}
+              onClick={handleCloseModal}
               className="p-2 text-[#6E5A4E] hover:text-[#721C24] hover:bg-[#F4EBE1] rounded-full transition-colors"
               aria-label="Close"
             >
@@ -474,23 +504,25 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
                 <div className="space-y-3">
                   <h3 className="text-xs uppercase font-bold tracking-wider text-[#8C6D4F] flex items-center gap-1.5">
                     <CreditCard className="w-4 h-4 text-[#721C24]" />
-                    3. Secure Payment
+                    3. Choose Payment Method
                   </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {[
-                      { id: 'VISA', label: 'Visa / MC' },
-                      { id: 'AMEX', label: 'Amex' },
-                      { id: 'APPLE_PAY', label: 'Apple Pay' },
-                      { id: 'CASH', label: 'Pay at Door' }
+                      { id: 'VISA', label: '💳 Visa / MC' },
+                      { id: 'AMEX', label: '💎 Amex' },
+                      { id: 'APPLE_PAY', label: '🍏 Apple Pay' },
+                      { id: 'GOOGLE_PAY', label: '📱 Google Pay' },
+                      { id: 'PAYPAL', label: '🅿️ PayPal' },
+                      { id: 'CASH', label: '💵 Pay at Door' }
                     ].map(p => (
                       <button
                         key={p.id}
                         type="button"
                         onClick={() => setPaymentMethod(p.id as any)}
-                        className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition-all ${
+                        className={`py-2.5 px-3 rounded-xl border text-xs font-medium text-center transition-all ${
                           paymentMethod === p.id
-                            ? 'border-[#721C24] bg-[#FAF7F2] text-[#721C24] font-bold'
-                            : 'border-[#E8DFC8] bg-white text-[#4A3B32]'
+                            ? 'border-[#721C24] bg-[#FAF7F2] text-[#721C24] font-bold ring-1 ring-[#721C24]'
+                            : 'border-[#E8DFC8] bg-white text-[#4A3B32] hover:bg-[#FAF7F2]'
                         }`}
                       >
                         {p.label}
@@ -501,7 +533,7 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
                   <div className="p-3 bg-[#FAF7F2] rounded-xl border border-[#E8DFC8] flex items-center gap-3">
                     <ShieldCheck className="w-5 h-5 text-[#721C24] shrink-0" />
                     <p className="text-[11px] text-[#6E5A4E]">
-                      256-bit encrypted checkout. You will not be charged until your pastry chef reviews the order.
+                      Selected payment method: <strong className="text-[#721C24]">{paymentMethod.replace(/_/g, ' ')}</strong>. 256-bit encrypted checkout.
                     </p>
                   </div>
                 </div>
@@ -705,16 +737,27 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
                   )}
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  id="order-finish-btn"
-                  onClick={handleFinish}
-                  className="w-full py-3.5 rounded-xl bg-[#721C24] hover:bg-[#58141B] text-white text-xs uppercase tracking-widest font-semibold shadow-md flex items-center justify-center gap-2"
-                >
-                  <span>{isAuthenticated ? 'View In Customer Dashboard' : 'Back to Home'}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </motion.button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    id="order-shop-more-btn"
+                    onClick={handleStartNewOrder}
+                    className="py-3.5 px-4 rounded-xl bg-white border border-[#721C24] text-[#721C24] hover:bg-[#FAF7F2] text-xs uppercase tracking-wider font-bold shadow-xs flex items-center justify-center gap-2 transition-all"
+                  >
+                    <span>+ Order Another Cake</span>
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    id="order-finish-btn"
+                    onClick={handleFinish}
+                    className="py-3.5 px-4 rounded-xl bg-[#721C24] hover:bg-[#58141B] text-white text-xs uppercase tracking-wider font-bold shadow-md flex items-center justify-center gap-2 transition-all"
+                  >
+                    <span>{isAuthenticated ? 'View Dashboard' : 'Track Order'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </motion.button>
+                </div>
               </motion.div>
             )}
 
@@ -740,16 +783,28 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
                 </div>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                id="cart-checkout-proceed-btn"
-                onClick={() => setStep('checkout')}
-                className="w-full py-3.5 rounded-xl bg-[#721C24] hover:bg-[#58141B] text-white text-xs font-semibold uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2"
-              >
-                <span>Proceed to Delivery & Payment</span>
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
+              <div className="flex gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onNavigate('/cakes');
+                  }}
+                  className="px-4 py-3.5 rounded-xl border border-[#E8DFC8] bg-[#FAF7F2] hover:bg-white text-[#4A3B32] text-xs font-semibold uppercase tracking-wider transition-colors shrink-0"
+                >
+                  + Add More Cakes
+                </button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  id="cart-checkout-proceed-btn"
+                  onClick={() => setStep('checkout')}
+                  className="flex-1 py-3.5 rounded-xl bg-[#721C24] hover:bg-[#58141B] text-white text-xs font-semibold uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2"
+                >
+                  <span>Proceed to Payment</span>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.button>
+              </div>
             </div>
           )}
 

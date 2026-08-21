@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext.tsx';
 import { lookupOrdersApi } from '../services/orderService.ts';
 import ProductCard from '../components/ProductCard.tsx';
 import InvoiceReceiptModal from '../components/InvoiceReceiptModal.tsx';
+import { formatCustomization } from '../utils/customizationFormatter.ts';
 
 interface OrderProps {
   products: Product[];
@@ -198,17 +199,31 @@ export default function Order({ products, onNavigate }: OrderProps) {
                     )}
                   </div>
 
-                  <div className="border-t border-[#E8DFC8] pt-2 space-y-1">
-                    <p className="font-bold text-[#2C1810] text-[11px]">Items:</p>
-                    {ord.orderItems?.map((item, idx) => (
-                      <div key={idx} className="flex justify-between text-[11px] text-[#4A3B32]">
-                        <span>{item.quantity}x {item.product?.name || 'Artisan Cake'}</span>
-                        <span>${((item.unitPrice || 0) * item.quantity).toFixed(2)}</span>
-                      </div>
-                    ))}
+                  <div className="border-t border-[#E8DFC8] pt-2 space-y-1.5">
+                    <p className="font-bold text-[#2C1810] text-[11px] uppercase tracking-wider">Order Items:</p>
+                    {ord.orderItems?.map((item, idx) => {
+                      const customDesc = formatCustomization(item.customization);
+                      return (
+                        <div key={idx} className="bg-white p-2 rounded-lg border border-[#E8DFC8]/60 space-y-0.5">
+                          <div className="flex justify-between text-[11px] text-[#4A3B32]">
+                            <span className="font-semibold text-[#2C1810]">
+                              {item.quantity}x {item.product?.name || 'Artisan Cake'}
+                            </span>
+                            <span className="font-bold text-[#721C24]">
+                              ${((item.unitPrice || 0) * item.quantity).toFixed(2)}
+                            </span>
+                          </div>
+                          {customDesc && (
+                            <p className="text-[10px] text-[#8C6D4F] font-medium pl-2">
+                              • {customDesc}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
                     <div className="flex justify-between font-bold text-[#2C1810] pt-1 text-xs border-t border-[#E8DFC8]/50">
                       <span>Total Paid:</span>
-                      <span className="text-[#721C24]">${ord.total.toFixed(2)}</span>
+                      <span className="text-[#721C24] font-serif text-sm">${ord.total.toFixed(2)}</span>
                     </div>
                   </div>
 

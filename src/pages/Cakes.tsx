@@ -8,6 +8,7 @@ interface CakesProps {
   products: Product[];
   onCustomizeProduct?: (product: Product) => void;
   onNavigate: (path: string) => void;
+  onProductUpdated?: (updatedProduct: Product) => void;
 }
 
 const CATEGORIES = [
@@ -18,7 +19,7 @@ const CATEGORIES = [
   'Mini Treats',
 ];
 
-export default function Cakes({ products, onCustomizeProduct, onNavigate }: CakesProps) {
+export default function Cakes({ products, onCustomizeProduct, onNavigate, onProductUpdated }: CakesProps) {
   const [selectedCategory, setSelectedCategory] = useState('All Collections');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name'>('featured');
@@ -162,6 +163,7 @@ export default function Cakes({ products, onCustomizeProduct, onNavigate }: Cake
                 product={product}
                 index={idx}
                 onCustomize={onCustomizeProduct}
+                onProductUpdated={onProductUpdated}
               />
             ))}
           </motion.div>
