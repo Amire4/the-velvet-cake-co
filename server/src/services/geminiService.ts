@@ -107,7 +107,7 @@ export async function generateChatbotResponse(userMessage: string, history: Arra
       parts: [{ text: userMessage }]
     });
 
-    const modelsToTry = ['gemini-3.7-flash', 'gemini-2.5-flash'];
+    const modelsToTry = ['gemini-3.7-flash', 'gemini-3.1-flash-lite'];
 
     for (const modelName of modelsToTry) {
       // Try up to 2 attempts per model with exponential backoff for transient 503/429 spikes

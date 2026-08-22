@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, X, Send, Sparkles, Trash2, Bot, User, HelpCircle, CheckCircle2 } from 'lucide-react';
 import { sendChatMessageApi } from '../services/chatService.ts';
+import { getSmartBakeryResponse } from '../services/smartChatEngine.ts';
 import { ChatMessage } from '../types.ts';
 
 const CATEGORIZED_SUGGESTIONS = [
@@ -50,24 +51,26 @@ export default function Chatbot() {
       createdAt: new Date().toISOString()
     };
 
-    setMessages(prev => [...prev, userMsg]);
+    const currentHistory = [...messages, userMsg];
+    setMessages(currentHistory);
     if (!textToSend) setInput('');
     setLoading(true);
 
     try {
-      const response = await sendChatMessageApi(messageText, sessionId);
+      const response = await sendChatMessageApi(messageText, sessionId, currentHistory);
       if (response && response.message) {
         setMessages(prev => [...prev, response.message]);
       } else {
         throw new Error('Empty response');
       }
     } catch (err) {
-      console.error('Chatbot API communication:', err);
+      console.warn('Chatbot API communication fallback:', err);
+      const smartReply = getSmartBakeryResponse(messageText, currentHistory);
       setMessages(prev => [
         ...prev,
         {
           role: 'ASSISTANT',
-          message: 'At The Velvet Cake Co., we are dedicated to helping you celebrate! We are located at 245 Lexington Avenue, Manhattan, open daily from 8:00 AM to 9:00 PM. Call us directly at +1 (212) 555-0187 or email orders@thevelvetcakeco.com.',
+          message: smartReply,
           createdAt: new Date().toISOString()
         }
       ]);

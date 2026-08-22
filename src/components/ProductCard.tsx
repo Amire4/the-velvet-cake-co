@@ -19,12 +19,16 @@ export default function ProductCard({
   index = 0,
   onProductUpdated
 }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { cartItems, addToCart, incrementQuantity, decrementQuantity } = useCart();
   const [product, setProduct] = useState<Product>(initialProduct);
   const [added, setAdded] = useState(false);
   const [cardQuantity, setCardQuantity] = useState(1);
   const [selectedFlavor] = useState('Chef Signature');
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+  // Check if this product is already in the cart
+  const cartItem = cartItems.find(item => item.product.id === product.id);
+  const inCartQuantity = cartItem ? cartItem.quantity : 0;
 
   // Sync if prop changes
   React.useEffect(() => {
@@ -37,7 +41,7 @@ export default function ProductCard({
     setTimeout(() => {
       setAdded(false);
       setCardQuantity(1);
-    }, 2000);
+    }, 1500);
   };
 
   const handleReviewSubmitted = (updated: Product) => {
@@ -156,6 +160,44 @@ export default function ProductCard({
 
           {/* Action Buttons */}
           <div className="pt-2 border-t border-[#F4EBE1] flex flex-col gap-2">
+            {/* In-Bag status indicator if already added */}
+            {inCartQuantity > 0 && (
+              <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-[#FAF5EE] border border-[#E8DFC8]/70 text-xs">
+                <span className="text-[#8C7A6B] flex items-center gap-1.5 font-medium">
+                  <ShoppingBag className="w-3.5 h-3.5 text-[#7D0A0A]" /> In Bag:
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      decrementQuantity(cartItem!.id);
+                    }}
+                    className="w-5 h-5 rounded-md bg-white border border-[#E8DFC8] text-[#7D0A0A] hover:bg-[#F5EFE6] flex items-center justify-center font-bold"
+                    title="Decrease quantity in bag"
+                    aria-label="Decrease quantity in bag"
+                  >
+                    <Minus className="w-3 h-3" />
+                  </button>
+                  <span className="font-extrabold text-[#7D0A0A] text-xs min-w-4 text-center">
+                    {inCartQuantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      incrementQuantity(cartItem!.id);
+                    }}
+                    className="w-5 h-5 rounded-md bg-white border border-[#E8DFC8] text-[#7D0A0A] hover:bg-[#F5EFE6] flex items-center justify-center font-bold"
+                    title="Increase quantity in bag"
+                    aria-label="Increase quantity in bag"
+                  >
+                    <Plus className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-2">
               {/* Card Quick Quantity Stepper */}
               {product.available && (
@@ -208,7 +250,7 @@ export default function ProductCard({
                   </>
                 ) : product.available ? (
                   <>
-                    <ShoppingBag className="w-3.5 h-3.5" /> Order {cardQuantity > 1 ? `(${cardQuantity})` : ''}
+                    <ShoppingBag className="w-3.5 h-3.5" /> {inCartQuantity > 0 ? `Add More (${cardQuantity})` : `Order ${cardQuantity > 1 ? `(${cardQuantity})` : ''}`}
                   </>
                 ) : (
                   'Sold Out'

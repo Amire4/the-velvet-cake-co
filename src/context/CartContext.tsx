@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, CartItem } from '../types.ts';
+import { getProductImageUrl } from '../utils/productImages.ts';
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -26,7 +27,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (Array.isArray(parsed)) {
         return parsed.map((item, idx) => ({
           ...item,
-          id: item.id || `cart-item-${idx}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`
+          id: item.id || `cart-item-${idx}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          product: {
+            ...item.product,
+            imageUrl: getProductImageUrl(item.product)
+          }
         }));
       }
       return [];
@@ -42,11 +47,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cartItems]);
 
   const addToCart = (product: Product, quantity = 1, customization: CartItem['customization'] = {}) => {
+    const validProduct: Product = {
+      ...product,
+      imageUrl: getProductImageUrl(product)
+    };
+
     setCartItems(prev => {
       // Find if exact same product with exact same customization exists
       const custKey = JSON.stringify(customization);
       const existingIndex = prev.findIndex(
-        item => item.product.id === product.id && JSON.stringify(item.customization) === custKey
+        item => item.product.id === validProduct.id && JSON.stringify(item.customization) === custKey
       );
 
       if (existingIndex > -1) {
@@ -55,7 +65,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updated[existingIndex] = {
           ...updated[existingIndex],
           quantity: newQty,
-          totalPrice: newQty * product.price
+          totalPrice: newQty * validProduct.price,
+          product: validProduct
         };
         return updated;
       }
@@ -66,10 +77,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         ...prev,
         {
           id: newItemId,
-          product,
+          product: validProduct,
           quantity,
           customization,
-          totalPrice: quantity * product.price
+          totalPrice: quantity * validProduct.price
         }
       ];
     });

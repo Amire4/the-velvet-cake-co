@@ -7,6 +7,7 @@ import { createOrderApi } from '../services/orderService.ts';
 import { Order, Product } from '../types.ts';
 import RatingReviewModal from './RatingReviewModal.tsx';
 import InvoiceReceiptModal from './InvoiceReceiptModal.tsx';
+import { getProductImageUrl, DEFAULT_CAKE_IMAGE } from '../utils/productImages.ts';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -235,9 +236,13 @@ export default function OrderModal({ isOpen, onClose, onNavigate }: OrderModalPr
                           className="py-4 flex gap-4 items-start"
                         >
                           <img
-                            src={item.product.imageUrl}
-                            alt={item.product.name}
-                            className="w-20 h-20 object-cover rounded-xl border border-[#E8DFC8] shrink-0"
+                            src={getProductImageUrl(item.product)}
+                            alt={item.product?.name || 'Artisanal Cake'}
+                            referrerPolicy="no-referrer"
+                            className="w-20 h-20 object-cover rounded-xl border border-[#E8DFC8] shrink-0 bg-[#FAF7F2]"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = DEFAULT_CAKE_IMAGE;
+                            }}
                           />
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start">

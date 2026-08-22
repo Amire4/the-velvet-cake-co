@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingBag, User as UserIcon, Menu as MenuIcon, X, Sparkles, Shield, ChevronRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { useCart } from '../context/CartContext.tsx';
@@ -11,7 +12,7 @@ interface NavbarProps {
 export default function Navbar({ currentPath, onNavigate }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const { itemCount, setIsCartOpen } = useCart();
+  const { itemCount, subtotal, setIsCartOpen } = useCart();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -75,20 +76,37 @@ export default function Navbar({ currentPath, onNavigate }: NavbarProps) {
           {/* Right Action Icons & Buttons */}
           <div className="flex items-center space-x-4">
             
-            {/* Cart Button */}
-            <button
+            {/* Cart Button with Live Animated Counter & Bag Pulse */}
+            <motion.button
+              whileTap={{ scale: 0.92 }}
               id="nav-cart-btn"
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 text-[#2D2926] hover:text-[#7D0A0A] hover:bg-[#F5EFE6] rounded-full transition-all flex items-center"
-              aria-label="View Shopping Cart"
+              className="relative p-2.5 text-[#2D2926] hover:text-[#7D0A0A] hover:bg-[#F5EFE6] rounded-full transition-all flex items-center justify-center group"
+              aria-label={`View Shopping Cart (${itemCount} items)`}
+              title={`View Shopping Cart (${itemCount} items)`}
             >
-              <ShoppingBag className="w-5 h-5" />
-              {itemCount > 0 && (
-                <span className="absolute top-0 right-0 bg-[#7D0A0A] text-white text-[11px] font-bold h-5 w-5 rounded-full flex items-center justify-center border-2 border-[#FDFCF0]">
-                  {itemCount}
-                </span>
-              )}
-            </button>
+              <motion.div
+                key={`bag-icon-${itemCount}`}
+                animate={{ scale: [1, 1.25, 1], rotate: [0, -8, 8, 0] }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+              >
+                <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform text-[#2D2926] group-hover:text-[#7D0A0A]" />
+              </motion.div>
+              <AnimatePresence mode="popLayout">
+                {itemCount > 0 && (
+                  <motion.span
+                    key={`badge-${itemCount}`}
+                    initial={{ scale: 0.3, opacity: 0, y: -4 }}
+                    animate={{ scale: [1.4, 1], opacity: 1, y: 0 }}
+                    exit={{ scale: 0.3, opacity: 0, y: -4 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className="absolute -top-1 -right-1 bg-[#7D0A0A] text-white text-[10px] font-extrabold h-5 min-w-5 px-1 rounded-full flex items-center justify-center border-2 border-[#FDFCF0] shadow-sm pointer-events-none"
+                  >
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
 
             {/* Auth / Account Controls */}
             {isAuthenticated ? (
@@ -184,6 +202,24 @@ export default function Navbar({ currentPath, onNavigate }: NavbarProps) {
           </div>
 
           <div className="pt-3 border-t border-[#E8E1D5] flex flex-col space-y-2.5">
+            {/* Mobile Shopping Bag shortcut */}
+            <button
+              id="nav-mobile-cart-btn"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsCartOpen(true);
+              }}
+              className="w-full flex items-center justify-between py-2.5 px-4 rounded-lg bg-[#FAF7F2] border border-[#E8DFC8] text-[#2D2926] hover:bg-[#F5EFE6] text-sm font-medium transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-4 h-4 text-[#7D0A0A]" />
+                <span>My Shopping Bag</span>
+              </div>
+              <span className="bg-[#7D0A0A] text-white text-xs font-bold px-2.5 py-0.5 rounded-full">
+                {itemCount} item{itemCount !== 1 ? 's' : ''} • ${subtotal.toFixed(2)}
+              </span>
+            </button>
+
             {isAuthenticated ? (
               <>
                 <button
