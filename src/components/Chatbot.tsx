@@ -6,14 +6,14 @@ import { getSmartBakeryResponse } from '../services/smartChatEngine.ts';
 import { ChatMessage } from '../types.ts';
 
 const CATEGORIZED_SUGGESTIONS = [
-  { label: '🍰 32 Flavors', query: 'What cake flavors do you offer?' },
-  { label: '💰 Cake Prices & Menu', query: 'What are the prices of your signature cakes?' },
-  { label: '🚚 Same-Day Delivery', query: 'Do you offer same-day delivery in Manhattan & NYC?' },
-  { label: '🎂 Custom Cake Studio', query: 'How do I order a custom multi-tier cake?' },
-  { label: '🌿 Vegan & Eggless', query: 'Do you offer vegan and eggless cakes?' },
-  { label: '📍 Store Location & Hours', query: 'Where is your bakery located and what are your hours?' },
-  { label: '📦 Track My Order', query: 'How do I track my order and email receipt?' },
-  { label: 'Urdu: Cake ka rate kya hai?', query: 'Cake price kya hai aur order kaise hoga?' }
+  { label: '🌟 Bestseller Cakes', query: 'What are your most popular signature cakes?' },
+  { label: '🍰 Artisanal Flavors', query: 'What cake flavors do you offer?' },
+  { label: '💰 Cake Pricing & Menu', query: 'What are the prices of your signature cakes and treats?' },
+  { label: '🚚 Same-Day NYC Delivery', query: 'Do you offer same-day delivery in Manhattan & NYC?' },
+  { label: '🎂 Custom Wedding Studio', query: 'How do I order a custom multi-tier wedding cake?' },
+  { label: '🌿 Vegan & Eggless Options', query: 'Do you offer vegan, eggless, or gluten-friendly cakes?' },
+  { label: '📍 Bakery Location & Hours', query: 'Where is your bakery located and what are your opening hours?' },
+  { label: '🧾 Track My Order / Invoice', query: 'How do I track my order status and get my invoice?' }
 ];
 
 export default function Chatbot() {
@@ -21,7 +21,7 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: 'ASSISTANT',
-      message: 'Hello! I am your AI Concierge for The Velvet Cake Co. at 245 Lexington Ave, Manhattan.\n\nAsk me anything about our 32 signature flavors, custom tiered wedding cakes, same-day NYC delivery, or eggless & vegan options!',
+      message: 'Hello and welcome to The Velvet Cake Co.! ✨ I am your AI Patisserie Concierge at 245 Lexington Ave, Manhattan.\n\nAsk me anything about our signature celebration cakes, bespoke wedding tiers, same-day NYC delivery, or eggless & vegan options!',
       createdAt: new Date().toISOString()
     }
   ]);
