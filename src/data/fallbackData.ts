@@ -1,0 +1,277 @@
+import { Product, CakeFlavor } from '../types.ts';
+
+export const FALLBACK_FLAVORS: CakeFlavor[] = [
+  { id: 'flav-1', name: 'Chocolate Truffle', description: 'Rich Belgian dark chocolate ganache infused sponge with silky truffle glaze.', available: true },
+  { id: 'flav-2', name: 'Red Velvet', description: 'Classic velvety cocoa crumb layered with signature Madagascar vanilla cream cheese.', available: true },
+  { id: 'flav-3', name: 'Vanilla Bean', description: 'Pure Tahitian vanilla bean sponge paired with whipped French buttercream.', available: true },
+  { id: 'flav-4', name: 'New York Cheesecake', description: 'Authentic dense, ultra-creamy baked cheesecake with buttery graham crust.', available: true },
+  { id: 'flav-5', name: 'Strawberry Shortcake', description: 'Airy sponge layered with fresh Hudson Valley strawberries and Chantilly cream.', available: true },
+  { id: 'flav-6', name: 'Oreo Cookies & Cream', description: 'Decadent chocolate sponge folded with crushed Oreo cookies and creamy filling.', available: true },
+  { id: 'flav-7', name: 'Salted Caramel', description: 'Buttery butterscotch cake with handcrafted Maldon sea salt caramel drizzle.', available: true },
+  { id: 'flav-8', name: 'Lotus Biscoff', description: 'Spiced speculoos crumb layered with crunchy Biscoff cookie spread.', available: true },
+  { id: 'flav-9', name: 'Ferrero Rocher', description: 'Hazelnut praline mousse, crushed roasted hazelnuts, and Nutella ganache.', available: true },
+  { id: 'flav-10', name: 'Lemon Blueberry', description: 'Zesty Meyer lemon sponge studded with fresh wild Maine blueberries.', available: true },
+  { id: 'flav-11', name: 'Tiramisu', description: 'Espresso-soaked ladyfinger sponge with light mascarpone cream and cocoa dust.', available: true },
+  { id: 'flav-12', name: 'Matcha Green Tea', description: 'Ceremonial Uji matcha green tea sponge with white chocolate mousse.', available: true },
+  { id: 'flav-13', name: 'Black Forest', description: 'Kirsch-scented chocolate cake filled with tart Morello cherries and cream.', available: true },
+  { id: 'flav-14', name: 'Pistachio Rose', description: 'Sicilian pistachio sponge lightly perfumed with organic rosewater petals.', available: true },
+  { id: 'flav-15', name: 'Carrot Cake', description: 'Spiced heirloom carrot cake with toasted walnuts, cinnamon, and cream cheese.', available: true },
+  { id: 'flav-16', name: 'Mango Passion Fruit', description: 'Tropical Alphonso mango mousse balanced with tangy passion fruit glaze.', available: true }
+];
+
+export const FALLBACK_PRODUCTS: Product[] = [
+  // 1. SIGNATURE CAKES
+  {
+    id: 'prod-sig-1',
+    name: 'The Signature Velvet Noir',
+    slug: 'signature-velvet-noir',
+    description: 'Our crown jewel. Belgian dark chocolate truffle layers with velvety chocolate ganache, 24k gold leaf accents, and chocolate blossom crowns.',
+    category: 'Signature Cakes',
+    price: 85.00,
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.9,
+    reviewCount: 48
+  },
+  {
+    id: 'prod-sig-2',
+    name: 'Grand Red Velvet Royale',
+    slug: 'grand-red-velvet-royale',
+    description: 'Crimson cocoa velvet sponge with tiers of whipped vanilla bean cream cheese frosting and handcrafted macaron crown.',
+    category: 'Signature Cakes',
+    price: 78.00,
+    imageUrl: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.8,
+    reviewCount: 42
+  },
+  {
+    id: 'prod-sig-3',
+    name: 'Lotus Biscoff Dream Cake',
+    slug: 'lotus-biscoff-dream-cake',
+    description: 'Spiced Belgian cookie butter sponge layered with speculoos crunch and topped with drip caramel and whole Lotus biscuits.',
+    category: 'Signature Cakes',
+    price: 82.00,
+    imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.9,
+    reviewCount: 36
+  },
+  {
+    id: 'prod-sig-4',
+    name: 'Strawberry Velvet Shortcake',
+    slug: 'strawberry-velvet-shortcake',
+    description: 'Fluffy sponge layered with fresh organic strawberries, strawberry preserves, and light Tahitian vanilla whipped cream.',
+    category: 'Signature Cakes',
+    price: 76.00,
+    imageUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.7,
+    reviewCount: 39
+  },
+  {
+    id: 'prod-sig-5',
+    name: 'Chocoholic Hazelnut Praline Cake',
+    slug: 'chocoholic-hazelnut-praline',
+    description: 'Layers of moist chocolate sponge, hazelnut crunch praline, Nutella mousse, and Ferrero Rocher crowns.',
+    category: 'Signature Cakes',
+    price: 88.00,
+    imageUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.9,
+    reviewCount: 52
+  },
+  {
+    id: 'prod-sig-6',
+    name: 'Matcha Pistachio Opera Cake',
+    slug: 'matcha-pistachio-opera-cake',
+    description: 'Uji ceremonial green tea sponge layered with Sicilian pistachio buttercream, white chocolate ganache, and edible gold leaf.',
+    category: 'Signature Cakes',
+    price: 84.00,
+    imageUrl: 'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.8,
+    reviewCount: 31
+  },
+
+  // 2. WEDDING CAKES
+  {
+    id: 'prod-wed-1',
+    name: 'Lexington Elegance Tiered Cake',
+    slug: 'lexington-elegance-tiered-cake',
+    description: 'Breathtaking 3-tier architectural wedding centerpiece with textured ivory buttercream, edible sugar florals, and delicate gold leaf.',
+    category: 'Wedding Cakes',
+    price: 340.00,
+    imageUrl: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 5.0,
+    reviewCount: 29
+  },
+  {
+    id: 'prod-wed-2',
+    name: 'Manhattan Flora Bridal Cake',
+    slug: 'manhattan-flora-bridal-cake',
+    description: 'Two-tier artisanal celebration cake frosted with smooth vanilla bean buttercream and adorned with fresh seasonal pastel florals.',
+    category: 'Wedding Cakes',
+    price: 210.00,
+    imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.9,
+    reviewCount: 24
+  },
+  {
+    id: 'prod-wed-3',
+    name: 'Vintage Lambeth Victorian Wedding Tier',
+    slug: 'vintage-lambeth-victorian-wedding-tier',
+    description: 'Masterfully piped Victorian scrollwork, scalloped buttercream borders, and delicate edible sugar cherry pearls on almond chiffon.',
+    category: 'Wedding Cakes',
+    price: 295.00,
+    imageUrl: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.9,
+    reviewCount: 28
+  },
+  {
+    id: 'prod-wed-4',
+    name: 'Botanical Blossom 3-Tier Grand Cake',
+    slug: 'botanical-blossom-3-tier-grand-cake',
+    description: 'Three-tier Madagascar vanilla champagne sponge with fresh organic botanicals, edible gold dusting, and passionfruit curd.',
+    category: 'Wedding Cakes',
+    price: 385.00,
+    imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 5.0,
+    reviewCount: 33
+  },
+  {
+    id: 'prod-wed-5',
+    name: 'Golden Radiance Pearl Wedding Cake',
+    slug: 'golden-radiance-pearl-wedding-cake',
+    description: 'Smooth Swiss meringue fondant adorned with shimmering edible sugar pearls, white chocolate collar, and delicate floral accents.',
+    category: 'Wedding Cakes',
+    price: 360.00,
+    imageUrl: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.8,
+    reviewCount: 22
+  },
+
+  // 3. MINI TREATS
+  {
+    id: 'prod-mini-1',
+    name: 'Artisan Cupcake Collection (Box of 12)',
+    slug: 'artisan-cupcake-collection-12',
+    description: 'Assortment of our finest cupcakes: Red Velvet, Salted Caramel, Chocolate Truffle, and Lemon Blueberry topped with buttercream rosettes.',
+    category: 'Mini Treats',
+    price: 48.00,
+    imageUrl: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.9,
+    reviewCount: 45
+  },
+  {
+    id: 'prod-mini-2',
+    name: 'Parisian Macaron Gift Box (18 pcs)',
+    slug: 'parisian-macaron-gift-box',
+    description: 'Delicate French almond meringue shells filled with dark chocolate ganache, pistachio cream, salted caramel, rosewater, and passion fruit.',
+    category: 'Mini Treats',
+    price: 52.00,
+    imageUrl: 'https://images.unsplash.com/photo-1570476922354-81227cdbb76c?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.9,
+    reviewCount: 56
+  },
+  {
+    id: 'prod-mini-3',
+    name: 'Gourmet Brownie & Blondie Ensemble',
+    slug: 'gourmet-brownie-ensemble',
+    description: 'Fudgy 70% dark chocolate espresso brownies and browned-butter pecan blondies dusted with sea salt crystals.',
+    category: 'Mini Treats',
+    price: 36.00,
+    imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.7,
+    reviewCount: 27
+  },
+  {
+    id: 'prod-mini-4',
+    name: 'Petite Velvet Cupcake Bouquet (Box of 6)',
+    slug: 'petite-velvet-cupcake-bouquet-6',
+    description: 'Six handcrafted artisan cupcakes featuring signature cocoa crumb, lavender cream, and Belgian dark chocolate curls.',
+    category: 'Mini Treats',
+    price: 28.00,
+    imageUrl: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.8,
+    reviewCount: 23
+  },
+
+  // 4. SEASONAL SPECIALS
+  {
+    id: 'prod-seas-1',
+    name: 'New York Basque Burnt Cheesecake',
+    slug: 'new-york-basque-burnt-cheesecake',
+    description: 'Caramelized mahogany exterior encasing an ultra-creamy, molten vanilla bean custard center baked at high heat.',
+    category: 'Seasonal Specials',
+    price: 68.00,
+    imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.9,
+    reviewCount: 41
+  },
+  {
+    id: 'prod-seas-2',
+    name: 'Meyer Lemon Meringue Silk Tart',
+    slug: 'meyer-lemon-meringue-silk-tart',
+    description: 'Pâte sablée butter crust filled with tangy Meyer lemon curd and crowned with torched Swiss meringue peaks.',
+    category: 'Seasonal Specials',
+    price: 62.00,
+    imageUrl: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.7,
+    reviewCount: 30
+  },
+  {
+    id: 'prod-seas-3',
+    name: 'Autumn Spiced Pecan Carrot Cake',
+    slug: 'autumn-spiced-pecan-carrot-cake',
+    description: 'Four layers of spiced carrot walnut cake, ginger cinnamon compote, and rich brown butter cream cheese frosting.',
+    category: 'Seasonal Specials',
+    price: 74.00,
+    imageUrl: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=1000&q=80',
+    featured: true,
+    available: true,
+    rating: 4.9,
+    reviewCount: 38
+  },
+  {
+    id: 'prod-seas-4',
+    name: 'Wild Berry Frangipane Tartlet Collection',
+    slug: 'wild-berry-frangipane-tartlet',
+    description: 'Almond frangipane cream baked with seasonal blackberries, raspberries, and glazed with apricot jelly.',
+    category: 'Seasonal Specials',
+    price: 45.00,
+    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80',
+    featured: false,
+    available: true,
+    rating: 4.6,
+    reviewCount: 21
+  }
+];

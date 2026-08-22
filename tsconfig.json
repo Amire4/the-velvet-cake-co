@@ -10,7 +10,9 @@
       "DOM.Iterable"
     ],
     "types": [
-      "node"
+      "node",
+      "react",
+      "react-dom"
     ],
     "skipLibCheck": true,
     "moduleResolution": "bundler",

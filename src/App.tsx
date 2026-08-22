@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AuthProvider } from './context/AuthContext.tsx';
 import { CartProvider, useCart } from './context/CartContext.tsx';
+import ErrorBoundary from './components/ErrorBoundary.tsx';
 import Navbar from './components/Navbar.tsx';
 import Footer from './components/Footer.tsx';
 import Chatbot from './components/Chatbot.tsx';
@@ -22,16 +23,23 @@ import Dashboard from './pages/Dashboard.tsx';
 import AdminDashboard from './pages/AdminDashboard.tsx';
 
 import { getProductsApi, getFlavorsApi } from './services/productService.ts';
+import { FALLBACK_PRODUCTS, FALLBACK_FLAVORS } from './data/fallbackData.ts';
 import { Product, CakeFlavor } from './types.ts';
 import { X, Sparkles, ShoppingBag, Plus, Minus } from 'lucide-react';
 
+function normalizeRoute(path: string): string {
+  if (!path) return '/';
+  const clean = path.split('?')[0].split('#')[0].replace(/\/+$/, '') || '/';
+  return clean.toLowerCase();
+}
+
 function AppContent() {
-  const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/');
+  const [currentPath, setCurrentPath] = useState<string>(() => normalizeRoute(window.location.pathname));
   const { isCartOpen, setIsCartOpen, addToCart } = useCart();
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [flavors, setFlavors] = useState<CakeFlavor[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>(FALLBACK_PRODUCTS);
+  const [flavors, setFlavors] = useState<CakeFlavor[]>(FALLBACK_FLAVORS);
+  const [loading, setLoading] = useState(false);
 
   // Customize Product Modal State
   const [customizingProduct, setCustomizingProduct] = useState<Product | null>(null);
@@ -41,14 +49,15 @@ function AppContent() {
   const [customQuantity, setCustomQuantity] = useState<number>(1);
 
   const navigate = (path: string) => {
-    setCurrentPath(path);
+    const normalized = normalizeRoute(path);
+    setCurrentPath(normalized);
     window.history.pushState({}, '', path);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname || '/');
+      setCurrentPath(normalizeRoute(window.location.pathname));
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -62,13 +71,15 @@ function AppContent() {
           getProductsApi(),
           getFlavorsApi(false)
         ]);
-        setProducts(prodList);
-        setFlavors(flavList);
-        if (flavList.length > 0) {
+        if (prodList && prodList.length > 0) {
+          setProducts(prodList);
+        }
+        if (flavList && flavList.length > 0) {
+          setFlavors(flavList);
           setSelectedFlavor(flavList[0].name);
         }
       } catch (err) {
-        console.error('Failed to load initial bakery catalog:', err);
+        console.warn('Using fallback catalog due to API connection state:', err);
       } finally {
         setLoading(false);
       }
@@ -99,6 +110,93 @@ function AppContent() {
     );
   };
 
+  const renderCurrentPage = () => {
+    switch (currentPath) {
+      case '/':
+      case '/home':
+        return (
+          <Home
+            products={products}
+            flavors={flavors}
+            onNavigate={navigate}
+            onCustomizeProduct={handleOpenCustomize}
+            onProductUpdated={handleProductUpdated}
+          />
+        );
+      case '/cakes':
+      case '/shop':
+      case '/catalog':
+        return (
+          <Cakes
+            products={products}
+            onCustomizeProduct={handleOpenCustomize}
+            onNavigate={navigate}
+            onProductUpdated={handleProductUpdated}
+          />
+        );
+      case '/menu':
+        return (
+          <Menu
+            products={products}
+            onNavigate={navigate}
+            onProductUpdated={handleProductUpdated}
+          />
+        );
+      case '/custom-cakes':
+      case '/custom':
+        return (
+          <CustomCakes
+            flavors={flavors}
+            onNavigate={navigate}
+          />
+        );
+      case '/about':
+        return <About onNavigate={navigate} />;
+      case '/gallery':
+        return <Gallery onNavigate={navigate} />;
+      case '/contact':
+        return <Contact />;
+      case '/order':
+      case '/checkout':
+        return (
+          <Order
+            products={products}
+            onNavigate={navigate}
+          />
+        );
+      case '/login':
+        return <Login onNavigate={navigate} initialMode="login" />;
+      case '/register':
+      case '/signup':
+        return <Login onNavigate={navigate} initialMode="register" />;
+      case '/dashboard':
+        return (
+          <ProtectedRoute onRedirectToLogin={() => navigate('/login')}>
+            <Dashboard onNavigate={navigate} />
+          </ProtectedRoute>
+        );
+      case '/admin':
+        return (
+          <AdminRoute
+            onRedirectToLogin={() => navigate('/login')}
+            onNavigateHome={() => navigate('/')}
+          >
+            <AdminDashboard onNavigate={navigate} />
+          </AdminRoute>
+        );
+      default:
+        return (
+          <Home
+            products={products}
+            flavors={flavors}
+            onNavigate={navigate}
+            onCustomizeProduct={handleOpenCustomize}
+            onProductUpdated={handleProductUpdated}
+          />
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFCF0] text-[#2D2926] flex flex-col font-sans selection:bg-[#7D0A0A] selection:text-white">
       {/* Navigation Header */}
@@ -114,81 +212,7 @@ function AppContent() {
             exit={{ opacity: 0, y: -12, scale: 0.995 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            {currentPath === '/' && (
-              <Home
-                products={products}
-                flavors={flavors}
-                onNavigate={navigate}
-                onCustomizeProduct={handleOpenCustomize}
-                onProductUpdated={handleProductUpdated}
-              />
-            )}
-
-            {currentPath === '/cakes' && (
-              <Cakes
-                products={products}
-                onCustomizeProduct={handleOpenCustomize}
-                onNavigate={navigate}
-                onProductUpdated={handleProductUpdated}
-              />
-            )}
-
-            {currentPath === '/menu' && (
-              <Menu
-                products={products}
-                onNavigate={navigate}
-                onProductUpdated={handleProductUpdated}
-              />
-            )}
-
-            {currentPath === '/custom-cakes' && (
-              <CustomCakes
-                flavors={flavors}
-                onNavigate={navigate}
-              />
-            )}
-
-            {currentPath === '/about' && (
-              <About onNavigate={navigate} />
-            )}
-
-            {currentPath === '/gallery' && (
-              <Gallery onNavigate={navigate} />
-            )}
-
-            {currentPath === '/contact' && (
-              <Contact />
-            )}
-
-            {currentPath === '/order' && (
-              <Order
-                products={products}
-                onNavigate={navigate}
-              />
-            )}
-
-            {currentPath === '/login' && (
-              <Login onNavigate={navigate} initialMode="login" />
-            )}
-
-            {currentPath === '/register' && (
-              <Login onNavigate={navigate} initialMode="register" />
-            )}
-
-            {currentPath === '/dashboard' && (
-              <ProtectedRoute onRedirectToLogin={() => navigate('/login')}>
-                <Dashboard onNavigate={navigate} />
-              </ProtectedRoute>
-            )}
-
-            {currentPath === '/admin' && (
-              <AdminRoute
-                onRedirectToLogin={() => navigate('/login')}
-                onNavigateHome={() => navigate('/')}
-              >
-                <AdminDashboard onNavigate={navigate} />
-              </AdminRoute>
-            )}
+            {renderCurrentPage()}
           </motion.div>
         </AnimatePresence>
       </main>
@@ -345,10 +369,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <AppContent />
-      </CartProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <AppContent />
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
